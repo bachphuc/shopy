@@ -1,0 +1,18 @@
+{
+    "name": "bachphuc/shopy",
+    "description": "shopping cart package for laravel",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "bachphuc",
+            "email": "trieuquangphuc123@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "bachphuc\\Shopy\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
