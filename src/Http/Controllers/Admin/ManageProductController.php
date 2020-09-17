@@ -25,40 +25,39 @@ class ManageProductController extends ManageBaseController{
                 'type' => 'text',
                 'validator' => 'required',
             ],
+            'price',
+            'count',
             'image' => [
                 'type' => 'image_input'
             ],
-            'user_id' => [
-                'type' => 'select',
-                'options' => [
-                    'model' => 'user',
-                    'display_field' => 'name'
-                ]
+            'user',
+            'gallery' => [
+                'type' => 'GalleryImageElement'
             ]
         ];
 
         $this->breadcrumbs = [
             [
-                'title' => 'Books',
+                'title' => 'Products',
                 'url' => route($this->modelRouteName. '.index')
             ]
         ];
 
         $this->fields = [
             'id',
-            'title',
-            'user' => [
-                'render' => function($book){
-                    if(!$book->user) return '';
-                    $href = route('store.users.books.index', ['user' => $book->user]);
-                    $html = "<a href='{$href}'>{$book->user->name}</a>";
+            'image' => [
+                'type' => 'image'
+            ],
+            'title' => [
+                'render' => function($item){
+                    $html = '<p>'. $item->title . '</p>';
+                    $html.= '<p>'. str_limit($item->description, 180) . '</p>';
+    
                     return $html;
                 }
             ],
-            'description',
-            'image' => [
-                'type' => 'image'
-            ]
+            'price',
+            'count',
         ];
 
         parent::__construct();

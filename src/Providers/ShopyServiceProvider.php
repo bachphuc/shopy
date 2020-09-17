@@ -50,6 +50,8 @@ class ShopyServiceProvider extends ServiceProvider
         $this->app->bind('shopy', function(){
             return new \bachphuc\Shopy\Shopy(new Version());
         });
+
+        $this->app->bind('shopy_product', '\bachphuc\Shopy\Models\Product');
     }
 
     /**
