@@ -76,4 +76,14 @@ class Cart extends ProductBase
         ->sum('count');
         $this->save();
     }
+
+    public function clear(){
+        $this->amount = 0;
+        $this->count = 0;
+        $this->save();
+        
+        // remove all item from this cart
+        CartItem::where('cart_id', $this->id)
+        ->delete();
+    }
 }

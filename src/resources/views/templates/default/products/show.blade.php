@@ -129,6 +129,10 @@
                             <div class="tab-pane active" id="tabs-1" role="tabpanel">
                                 <h6>Description</h6>
                                 <p>{{$product->description}}</p>
+                                @if($product->hasCustomField('privacy'))
+                                <h6>Privacy</h6>
+                                <p>{{$product->field('privacy')}}</p>
+                                @endif
                             </div>
                             <div class="tab-pane" id="tabs-2" role="tabpanel">
                                 <h6>Specification</h6>

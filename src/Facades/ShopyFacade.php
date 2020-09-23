@@ -4,6 +4,8 @@ namespace bachphuc\Shopy\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
+use CustomField;
+
 class ShopyFacade extends Facade
 {
     /**
@@ -22,6 +24,7 @@ class ShopyFacade extends Facade
     {
         self::productRoutes();
         self::homeRoutes();
+        self::accountRoutes();
     }
 
     /**
@@ -36,11 +39,29 @@ class ShopyFacade extends Facade
         $namespace = '\bachphuc\Shopy\Http\Controllers\\';
 
         $router->resource('products', $namespace . 'ProductController');
+        $router->get('product/{alias}', $namespace. 'ProductController@detail')->name('products.detail');
 
         $router->resource('carts', $namespace. 'CartController');
         $router->get('cart/checkout', $namespace. 'CartController@checkout')->name('carts.checkout');
         $router->post('cart/checkout/payment-method', $namespace. 'CartController@paymentMethod')->name('carts.payment-method');
         $router->post('cart/place-order', $namespace. 'CartController@placeOrder')->name('carts.place-order');
+
+        $router->get('categories/{alias}', $namespace. 'CategoryController@show')->name('categories.show');
+    }
+
+    /**
+     * Register the account routers for shopy.
+     *
+     * @return void
+     */
+    public static function accountRoutes()
+    {
+        $router = static::$app->make('router');
+
+        $namespace = '\bachphuc\Shopy\Http\Controllers\\';
+
+        $router->get('account/orders', $namespace. 'AccountController@orders')->name('account.orders');
+        $router->get('account/orders/{order}', $namespace. 'AccountController@orderDetail')->name('orders.show');
     }
 
     /**
@@ -53,9 +74,18 @@ class ShopyFacade extends Facade
         $router = static::$app->make('router');
 
         $router->group(['prefix' => 'admin', 'as' => 'admin.'], function() use($router) {
-            $router->resource('products', '\bachphuc\Shopy\Http\Controllers\Admin\ManageProductController');
-            $router->post('upload-product-image', '\bachphuc\Shopy\Http\Controllers\Admin\ManageProductController@uploadProductImage')->name('upload-item-image');
-            $router->delete('delete-product-image', '\bachphuc\Shopy\Http\Controllers\Admin\ManageProductController@uploadProductImage')->name('delete-item-image');
+            $namespace = '\bachphuc\Shopy\Http\Controllers\Admin\\';
+            $router->get('/', $namespace. 'AdminController@index')->name('index');
+
+            $router->resource('products', $namespace. 'ManageProductController');
+            $router->post('upload-product-image', $namespace .'ManageProductController@uploadProductImage')->name('upload-item-image');
+            $router->delete('delete-product-image', $namespace .'ManageProductController@uploadProductImage')->name('delete-item-image');
+
+            $router->resource('categories', $namespace . 'ManageCategoryController');
+
+            $router->resource('fields', $namespace . 'ProductFieldsController');
+
+            $router->resource('products.variants', $namespace. 'ManageVariantController');
         });
     }
 

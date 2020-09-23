@@ -4,6 +4,8 @@ namespace bachphuc\Shopy;
 
 use bachphuc\Shopy\Version;
 use bachphuc\Shopy\Models\Cart;
+use bachphuc\Shopy\Models\Address;
+use bachphuc\Shopy\Models\Category;
 
 class Shopy
 {
@@ -13,6 +15,7 @@ class Shopy
     protected $theme = 'default';
 
     protected $_cart = null;
+    protected $_categories = null;
 
     public function __construct(Version $version)
     {   
@@ -29,6 +32,15 @@ class Shopy
         return 'bachphuc.shopy::templates.'. $this->theme . '.' . $path;
     }
 
+    public function adminView($path, $data = [])
+    {
+        return view($this->adminViewPath($path), $data);        
+    }
+
+    public function adminViewPath($path){
+        return 'bachphuc.shopy::admin.'. $this->theme . '.' . $path;
+    }
+
     public function setLayout($layout)
     {
         $this->customLayout = $layout;
@@ -38,6 +50,10 @@ class Shopy
     {
         if(!empty($this->customLayout)) return $this->customLayout;
         return 'bachphuc.shopy::templates.' . $this->theme . '.layouts.' . $this->layout;
+    }
+
+    public function adminLayout(){
+        return 'bachphuc.shopy::admin.' . $this->theme . '.layouts.' . $this->layout;
     }
 
     public function cart(){
@@ -64,5 +80,25 @@ class Shopy
 
     public function cartAmount(){
         return $this->cart()->amount;
+    }
+
+    public function userShippingAddresses(){
+        return Address::getUserAddresses();
+    }
+
+    public function categories(){
+        if($this->_categories !== null) return $this->_categories;
+
+        $this->_categories = Category::all();
+
+        return $this->_categories;
+    }
+
+    public function asset($path){
+        return asset('assets/templates/default/' . $path);
+    }
+
+    public function adminAsset($path){
+        return asset('assets/templates/default/admin/' . $path);
     }
 }

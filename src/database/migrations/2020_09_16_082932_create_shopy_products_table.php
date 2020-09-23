@@ -24,6 +24,11 @@ class CreateShopyProductsTable extends Migration
             $table->string('alias')->nullable();
             $table->integer('category_id')->default(0);
             $table->string('currency', 5)->nullable()->default('vnd');
+
+            $table->tinyInteger('is_hot')->default(0);
+            $table->tinyInteger('is_new')->default(0);
+            $table->tinyInteger('is_featured')->default(0);
+
             $table->timestamps();
         });
     }

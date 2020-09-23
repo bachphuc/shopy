@@ -23,6 +23,8 @@ class CreateShopyOrdersTable extends Migration
             $table->string('status', 20)->nullable()->default('pending');
             $table->string('payment_method', 20)->nullable();
             $table->string('delivery_status', 20)->nullable();
+            $table->mediumText('note')->nullable();
+            $table->integer('shipping_id')->default(0);
 
             $table->timestamps();
         });

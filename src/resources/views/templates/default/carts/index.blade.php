@@ -58,9 +58,9 @@
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6">
-                    <div class="cart__btn update__btn">
+                    {{-- <div class="cart__btn update__btn">
                         <a href="#"><span class="icon_loading"></span> Update cart</a>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
             <div class="row">

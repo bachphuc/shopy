@@ -15,14 +15,16 @@
     rel="stylesheet">
 
     <!-- Css Styles -->
-    <link rel="stylesheet" href="/assets/templates/default/css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="/assets/templates/default/css/font-awesome.min.css" type="text/css">
-    <link rel="stylesheet" href="/assets/templates/default/css/elegant-icons.css" type="text/css">
-    <link rel="stylesheet" href="/assets/templates/default/css/jquery-ui.min.css" type="text/css">
-    <link rel="stylesheet" href="/assets/templates/default/css/magnific-popup.css" type="text/css">
-    <link rel="stylesheet" href="/assets/templates/default/css/owl.carousel.min.css" type="text/css">
-    <link rel="stylesheet" href="/assets/templates/default/css/slicknav.min.css" type="text/css">
-    <link rel="stylesheet" href="/assets/templates/default/css/style.css" type="text/css">
+    <link rel="stylesheet" href="{{Shopy::asset('css/bootstrap.min.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{Shopy::asset('css/font-awesome.min.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{Shopy::asset('css/elegant-icons.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{Shopy::asset('css/jquery-ui.min.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{Shopy::asset('css/magnific-popup.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{Shopy::asset('css/owl.carousel.min.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{Shopy::asset('css/slicknav.min.css')}}" type="text/css">
+    <link rel="stylesheet" href="{{Shopy::asset('css/style.css')}}" type="text/css">
+
+    @stack('styles')
 </head>
 
 <body>
@@ -45,7 +47,7 @@
             </a></li>
         </ul>
         <div class="offcanvas__logo">
-            <a href="/"><img src="/assets/templates/default/img/logo.png" alt=""></a>
+            <a href="/"><img src="{{Shopy::asset('img/logo.png')}}" alt=""></a>
         </div>
         <div id="mobile-menu-wrap"></div>
         <div class="offcanvas__auth">
@@ -82,7 +84,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg="/assets/templates/default/img/instagram/insta-1.jpg">
+                    <div class="instagram__item set-bg" data-setbg="{{Shopy::asset('img/instagram/insta-1.jpg')}}">
                         <div class="instagram__text">
                             <i class="fa fa-instagram"></i>
                             <a href="#">@ ashion_shop</a>
@@ -90,7 +92,7 @@
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg="/assets/templates/default/img/instagram/insta-2.jpg">
+                    <div class="instagram__item set-bg" data-setbg="{{Shopy::asset('img/instagram/insta-2.jpg')}}">
                         <div class="instagram__text">
                             <i class="fa fa-instagram"></i>
                             <a href="#">@ ashion_shop</a>
@@ -98,7 +100,7 @@
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg="/assets/templates/default/img/instagram/insta-3.jpg">
+                    <div class="instagram__item set-bg" data-setbg="{{Shopy::asset('img/instagram/insta-3.jpg')}}">
                         <div class="instagram__text">
                             <i class="fa fa-instagram"></i>
                             <a href="#">@ ashion_shop</a>
@@ -106,7 +108,7 @@
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg="/assets/templates/default/img/instagram/insta-4.jpg">
+                    <div class="instagram__item set-bg" data-setbg="{{Shopy::asset('img/instagram/insta-4.jpg')}}">
                         <div class="instagram__text">
                             <i class="fa fa-instagram"></i>
                             <a href="#">@ ashion_shop</a>
@@ -114,7 +116,7 @@
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg="/assets/templates/default/img/instagram/insta-5.jpg">
+                    <div class="instagram__item set-bg" data-setbg="{{Shopy::asset('img/instagram/insta-5.jpg')}}">
                         <div class="instagram__text">
                             <i class="fa fa-instagram"></i>
                             <a href="#">@ ashion_shop</a>
@@ -122,7 +124,7 @@
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg="/assets/templates/default/img/instagram/insta-6.jpg">
+                    <div class="instagram__item set-bg" data-setbg="{{Shopy::asset('img/instagram/insta-6.jpg')}}">
                         <div class="instagram__text">
                             <i class="fa fa-instagram"></i>
                             <a href="#">@ ashion_shop</a>
@@ -150,16 +152,16 @@
     <!-- Search End -->
 
     <!-- Js Plugins -->
-    <script src="/assets/templates/default/js/jquery-3.3.1.min.js"></script>
-    <script src="/assets/templates/default/js/bootstrap.min.js"></script>
-    <script src="/assets/templates/default/js/jquery.magnific-popup.min.js"></script>
-    <script src="/assets/templates/default/js/jquery-ui.min.js"></script>
-    <script src="/assets/templates/default/js/mixitup.min.js"></script>
-    <script src="/assets/templates/default/js/jquery.countdown.min.js"></script>
-    <script src="/assets/templates/default/js/jquery.slicknav.js"></script>
-    <script src="/assets/templates/default/js/owl.carousel.min.js"></script>
-    <script src="/assets/templates/default/js/jquery.nicescroll.min.js"></script>
-    <script src="/assets/templates/default/js/main.js"></script>
+    <script src="{{Shopy::asset('js/jquery-3.3.1.min.js')}}"></script>
+    <script src="{{Shopy::asset('js/bootstrap.min.js')}}"></script>
+    <script src="{{Shopy::asset('js/jquery.magnific-popup.min.js')}}"></script>
+    <script src="{{Shopy::asset('js/jquery-ui.min.js')}}"></script>
+    <script src="{{Shopy::asset('js/mixitup.min.js')}}"></script>
+    <script src="{{Shopy::asset('js/jquery.countdown.min.js')}}"></script>
+    <script src="{{Shopy::asset('js/jquery.slicknav.js')}}"></script>
+    <script src="{{Shopy::asset('js/owl.carousel.min.js')}}"></script>
+    <script src="{{Shopy::asset('js/jquery.nicescroll.min.js')}}"></script>
+    <script src="{{Shopy::asset('js/main.js')}}"></script>
 
     <script>
         window.addEventListener('load', () => {

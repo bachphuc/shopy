@@ -24,6 +24,16 @@ class ProductController
         ]);
     }
 
+    public function detail(Request $request, $alias){
+        $product = Product::findByName($alias);
+
+        if(!$product) {
+            abort(404);
+        }
+
+        return $this->show($request, $product);
+    }
+
     public function create()
     {
         return Shopy::view('products.create');

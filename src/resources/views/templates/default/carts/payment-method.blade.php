@@ -13,6 +13,7 @@
                 {{csrf_field()}}
                 <div class="row">
                     <div class="col-lg-8">
+                        <input type="hidden" name="order_id" value="{{$order->id}}" />
                         <h5>PAYMENT METHOD</h5>
                         <div class="row"> 
                             <div class="col-lg-12 payment-methods">

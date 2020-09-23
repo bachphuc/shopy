@@ -17,15 +17,30 @@ class Product extends ProductBase
      * @var array
      */
     protected $fillable = [
-        'title', 'image', 'description', 'user_id', 'price', 'count', 'alias', 'category_id', 'currency'
+        'title', 'image', 'description', 'user_id', 'price', 'count', 'alias', 'category_id', 'currency', 'alias', 'is_hot', 'is_new', 'is_featured'
     ];
 
     public function user(){
         return $this->belongsTo('\App\User', 'user_id');
     }
 
+    public function category(){
+        return $this->belongsTo('\bachphuc\Shopy\Models\Category', 'category_id');
+    }
+
     public function getHref(){
+        if(!empty($this->alias)){
+            return route('products.detail', ['alias' => $this->alias]);
+        }
         return route('products.show', ['product' => $this]);
+    }
+
+    public static function findByName($alias){
+        if(empty($alias)) return null;
+        return Product::where('id', $alias)
+        ->orWhere('alias', $alias)
+        ->orWhere('title', $alias)
+        ->first();
     }
 
     public function getImages(){

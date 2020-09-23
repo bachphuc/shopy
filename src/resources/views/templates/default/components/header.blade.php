@@ -33,7 +33,7 @@
                         <a href="{{route('login')}}">Login</a>
                         <a href="{{route('register')}}">Register</a>
                         @else
-                        <a href="">Welcome {{user_name()}}</a>
+                        <a href="{{route('account.orders')}}">Welcome {{user_name()}}</a>
                         @endif
                     </div>
                     <ul class="header__right__widget">

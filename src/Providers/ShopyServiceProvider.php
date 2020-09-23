@@ -52,6 +52,8 @@ class ShopyServiceProvider extends ServiceProvider
         });
 
         $this->app->bind('shopy_product', '\bachphuc\Shopy\Models\Product');
+        $this->app->bind('shopy_category', '\bachphuc\Shopy\Models\Category');
+        $this->app->bind('shopy_product_variant', '\bachphuc\Shopy\Models\ProductVariant');
     }
 
     /**

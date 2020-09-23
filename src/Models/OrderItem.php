@@ -21,4 +21,8 @@ class OrderItem extends ProductBase
     public function user(){
         return $this->belongsTo('\App\User', 'user_id');
     }
+
+    public function product(){
+        return $this->belongsTo('\bachphuc\Shopy\Models\Product', 'product_id');
+    }
 }
