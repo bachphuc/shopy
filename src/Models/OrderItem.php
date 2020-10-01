@@ -15,7 +15,7 @@ class OrderItem extends ProductBase
      * @var array
      */
     protected $fillable = [
-        'user_id', 'order_id', 'product_id', 'price', 'count', 'amount', 'currency',
+        'user_id', 'order_id', 'product_id', 'price', 'count', 'amount', 'currency', 'variant_id',
     ];
 
     public function user(){
@@ -24,5 +24,9 @@ class OrderItem extends ProductBase
 
     public function product(){
         return $this->belongsTo('\bachphuc\Shopy\Models\Product', 'product_id');
+    }
+    
+    public function variant(){
+        return $this->belongsTo('bachphuc\Shopy\Models\ProductVariant', 'variant_id');
     }
 }

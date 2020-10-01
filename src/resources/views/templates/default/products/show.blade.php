@@ -1,5 +1,53 @@
 @extends(Shopy::layout())
 
+@push('styles')
+<style>
+    .field-checkbox{
+        margin-right: 4px;
+    }
+    .field-checkbox input{
+        opacity: 0;
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin-right: 8px;
+    }
+    .field-checkbox label{
+        border: 1px solid #ccc;
+        padding: 2px 8px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        font-size: 0.82em;
+        border-radius: 2px;
+    }
+    .field-checkbox.field-color label{
+        height: 24px;
+        width: 24px;
+        border: 2px solid transparent;
+        box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+        border-radius: 2px;
+    }
+
+    .field-checkbox input:checked + label{
+        border-color: red;
+    }
+    .field-checkbox input:disabled + label{
+        color: #ddd;
+        border-color: #e1e1e1;
+    }
+    .field-checkbox.field-color input:checked + label{
+        border-color: #000;
+    }
+    .field-checkbox.field-color input:disabled + label{
+        opacity: 0.5;
+        border-color: transparent;
+    }
+    
+</style>
+@endpush
+
 @section('content')
     <!-- Product Details Section Begin -->
     <section class="product-details spad">
@@ -26,10 +74,13 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="product__details__text">
-                        <form action="{{route('carts.store')}}" method="POST">
+                        <form action="{{Shopy::route('carts.store')}}" method="POST">
                             {{csrf_field()}}
                             <input type="hidden" name="product_id" value="{{$product->id}}" />
-                            <h3>{{$product->getTitle()}} <span>Brand: SKMEIMore Men Watches from SKMEI</span></h3>
+                            <input id="variant_id" type="hidden" name="variant_id" value="{{isset($selectedVariant) ? $selectedVariant->id : 0}}" />
+                            <h3>{{$product->getTitle()}} 
+                                @if($product->hasCustomField('brand'))<span>Brand: {{$product->field('brand')}}</span>@endif
+                            </h3>
                             <div class="rating">
                                 <i class="fa fa-star"></i>
                                 <i class="fa fa-star"></i>
@@ -38,8 +89,8 @@
                                 <i class="fa fa-star"></i>
                                 <span>( 138 reviews )</span>
                             </div>
-                            <div class="product__details__price">$ {{$product->price}} <span>$ 83.0</span></div>
-                            <p>{{$product->description}}</p>
+                            <div class="product__details__price">$ <span id="product__details__price_amount">{{$product->getPriceOf($selectedVariant)}}</span> <span class="product__details__price__discount">$ 83.0</span></div>
+                            
                             <div class="product__details__button">
                                 <div class="quantity">
                                     <span>Quantity:</span>
@@ -65,44 +116,27 @@
                                             </label>
                                         </div>
                                     </li>
+                                    {{-- BEGIN custom field for variant --}}
+                                    @if(isset($customFields) && !empty($customFields))
+                                    @foreach($customFields as $key => $field)
                                     <li>
-                                        <span>Available color:</span>
-                                        <div class="color__checkbox">
-                                            <label for="red">
-                                                <input type="radio" name="color__radio" id="red" checked>
-                                                <span class="checkmark"></span>
+                                        <span>Available {{$field->getTitle()}}:</span>
+                                        <div class="field-group {{$field->data_type ? 'field-group-'. $field->data_type : ''}}">
+                                            @foreach($field->getOptions() as $opt)
+                                            <label class="field-checkbox {{$field->data_type ? 'field-'. $field->data_type : ''}}">
+                                                <input data-field-index="{{$key}}" class="field-checkbox-radio" type="radio" name="{{$field->alias}}" id="field-{{$field->alias}}-{{$opt}}" value="{{$opt}}" {{isset($selectedVariant) && $selectedVariant->hasOption($field->alias, $opt) ? 'checked' : ''}} >
+                                                @if($field->data_type === 'color')
+                                                <label for="field-{{$field->alias}}-{{$opt}}" style="background-color: {{$opt}};"></label>
+                                                @else
+                                                <label for="field-{{$field->alias}}-{{$opt}}">{{$opt}}</label>
+                                                @endif
                                             </label>
-                                            <label for="black">
-                                                <input type="radio" name="color__radio" id="black">
-                                                <span class="checkmark black-bg"></span>
-                                            </label>
-                                            <label for="grey">
-                                                <input type="radio" name="color__radio" id="grey">
-                                                <span class="checkmark grey-bg"></span>
-                                            </label>
+                                            @endforeach
                                         </div>
                                     </li>
-                                    <li>
-                                        <span>Available size:</span>
-                                        <div class="size__btn">
-                                            <label for="xs-btn" class="active">
-                                                <input type="radio" id="xs-btn">
-                                                xs
-                                            </label>
-                                            <label for="s-btn">
-                                                <input type="radio" id="s-btn">
-                                                s
-                                            </label>
-                                            <label for="m-btn">
-                                                <input type="radio" id="m-btn">
-                                                m
-                                            </label>
-                                            <label for="l-btn">
-                                                <input type="radio" id="l-btn">
-                                                l
-                                            </label>
-                                        </div>
-                                    </li>
+                                    @endforeach
+                                    @endif
+                                    {{-- END custom field for variant --}}
                                     <li>
                                         <span>Promotions:</span>
                                         <p>Free shipping</p>
@@ -168,4 +202,180 @@
         </div>
     </section>
     <!-- Product Details Section End -->
+
+    <script>
+        const variants = {!! json_encode($variants->toArray()) !!};
+        const customFields = {!! json_encode($arrCustomFields) !!};
+
+        var valueOfRows, allVariants, indexAvailableCases = {};
+        window.addEventListener('load', () => {
+            document.querySelectorAll(`.field-checkbox input[type=radio]`).forEach(ele => {
+                ele.addEventListener('change', (e) => {
+                    fieldChanged(e);
+                });
+            })
+            
+            initCustomFields();
+
+            allVariants = initCases();
+
+            fieldChanged();
+        })
+
+        function initCustomFields(){
+            valueOfRows = Array(customFields.length).fill(1);
+            customFields.forEach((c, cIndex) => {
+                valueOfRows.forEach((v, vIndex) => {
+                    if(cIndex > vIndex){
+                        valueOfRows[vIndex]*= c.options.length;
+                    }
+                })
+            });
+        }
+
+        function fieldChanged(e){
+            if(!variants.length){
+                console.log(`there is no variants found`);
+                document.querySelectorAll('.field-checkbox-radio').forEach(e => {
+                    e.disabled = true;
+                })
+                return;
+            }
+            const values = getSelectedFieldValues();
+
+            let variant = variants.find(v => compareVariant(v, values));
+            if(!variant){
+                if(!e) return;
+                const fieldIndex = parseInt(e.target.dataset['fieldIndex']);
+                // there is no variant found
+                const availableCase = getMaybeCase(fieldIndex, values);
+                if(availableCase){
+                    // update price
+                    variant = indexAvailableCases[availableCase.key];
+                    document.getElementById('product__details__price_amount').innerText = variant.price;
+                    // make these conditions active
+                    customFields.forEach((c, cIndex) => {
+                        document.getElementById(`field-${c.alias}-${availableCase[c.alias]}`).checked = true;
+                    })
+                    document.getElementById('variant_id').value = variant.id;
+                }
+                else{
+                    console.log(`No variant found with condition: ${JSON.stringify(values)}, fieldIndex: ${fieldIndex}`);
+                    console.log(`cannot find available case to auto select => bug`);
+                }
+            }
+            else{
+                // update price
+                document.getElementById('product__details__price_amount').innerText = variant.price;
+                document.getElementById('variant_id').value = variant.id;
+            }
+
+            // update state of values
+            customFields.forEach( (f, fIndex) => {
+                if(f.options){
+                    f.options.forEach((o, oIndex) => {
+                        const ele = document.getElementById(`field-${f.alias}-${o}`);
+                        
+                        const hasVariant = variants.find(v => maybeHaveVariant(v, f, fIndex, values, o, oIndex));
+                        ele.disabled = hasVariant ? false : true;
+                    })
+                }
+            })
+        }
+
+        function maybeHaveVariant(v, f, fIndex, values, o, oIndex){
+            // check direct
+            const checkValues = Object.assign({}, values);
+            checkValues[f.alias] = o;
+
+            const hasVariant = variants.find(v => compareVariant(v, checkValues));
+            if(hasVariant) return true;
+
+            const maybeCase = getMaybeCase(fIndex, checkValues);
+            if(maybeCase) return true;
+
+            return false;
+            // check if at least one of variant for this option
+            $result = false;
+            for(let i = fIndex + 1; i < customFields.length; i++){
+                const currentF = customFields[i];
+
+            }
+            return $result;
+        }
+
+        function getMaybeCase(currentFIndex, values){
+            customFields.forEach((f, fIndex) => {
+                if(fIndex > currentFIndex){
+                    if(values[f.alias] !== undefined){
+                        delete values[f.alias];
+                    }
+                }
+            })
+
+            return allVariants.find(v => v.is_available && compareVariant(v, values));
+        }
+
+        function compareVariant(variant, values){
+            let result = true;
+            for(let k in values){
+                if(result && variant[k] !== values[k]){
+                    result = false;
+                }
+            }
+            return result;
+        }
+
+        function getSelectedFieldValues(){
+            let result = {};
+            customFields.forEach(e => {
+                const ele = document.querySelector(`input.field-checkbox-radio[name=${e.alias}]:checked`);
+                if(ele){
+                    result[e.alias] = ele.value;
+                }
+            });
+            return result;
+        }
+
+        function createBlankVariant(){
+            return new Array(customFields.length);
+        }
+
+        function initCases(){
+            let total = 1;
+            customFields.forEach((f, fIndex) => {
+                total*=f.options.length;
+            })
+
+            variants.forEach(v => {
+                indexAvailableCases[v.values] = v;
+            })
+
+            const results = [];
+            for(let i = 0; i < total; i++){
+                results.push(translateIndex(i));
+            }
+
+            return results;
+        }
+
+        function translateIndex(value){
+            let remain = value;
+            let result = {};
+            let options = [];
+            for(let i = 0; i < valueOfRows.length; i++){
+                const v = Math.floor(remain / valueOfRows[i]);
+                result[customFields[i].alias] = customFields[i].options[v];
+                remain = remain - (v * valueOfRows[i]);
+                options.push(customFields[i].options[v]);
+            }
+
+            result.key = options.join(',');
+            if(indexAvailableCases[result.key]){
+                result.is_available = true;
+            }
+
+            return result;
+        }
+    </script>
 @endsection

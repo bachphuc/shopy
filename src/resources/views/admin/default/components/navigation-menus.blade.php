@@ -6,6 +6,11 @@
         'url' => url('admin'),
         'key' => 'dashboard',
     ], [
+        'title' => 'Orders',
+        'icon' => 'dashboard',
+        'url' => route('admin.orders.index'),
+        'key' => 'orders',
+    ], [
         'title' => 'Categories',
         'icon' => 'dashboard',
         'url' => route('admin.categories.index'),
@@ -15,14 +20,23 @@
         'icon' => 'dashboard',
         'url' => route('admin.products.index'),
         'key' => 'products',
-    ],
-    [
+    ], [
+        'title' => 'Customers',
+        'icon' => 'dashboard',
+        'url' => route('admin.customers.index'),
+        'key' => 'customers',
+    ], [
         'title' => 'Fields',
         'icon' => 'dashboard',
         'url' => route('admin.fields.index'),
         'key' => 'fields'
+    ], [
+        'title' => 'Settings',
+        'icon' => 'dashboard',
+        'url' => url('admin/settings'),
+        'key' => 'settings'
     ]
-    ];
+];
 @endphp
 
 <ul class="nav">

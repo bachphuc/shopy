@@ -23,7 +23,8 @@ class CreateShopyCartItemsTable extends Migration
             $table->integer('count')->default(0);
             $table->decimal('amount', 15, 2)->default(0);
             $table->string('currency', 5)->nullable()->default('vnd');
-
+            $table->integer('variant_id')->nullable()->default(0);
+            
             $table->timestamps();
         });
     }

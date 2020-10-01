@@ -8,14 +8,12 @@ use bachphuc\LaravelHTMLElements\Components\Section;
 use CustomField;
 
 use Illuminate\Http\Request;
-
-
 use bachphuc\Shopy\Models\Product;
 
 class ManageVariantController extends ManageBaseController{
     protected $modelName = 'variant';
     protected $model = '\bachphuc\Shopy\Models\ProductVariant';
-    protected $activeMenu = 'variants';
+    protected $activeMenu = 'products';
     protected $searchFields = ['title', 'description'];
     protected $modelRouteName = 'admin.products.variants';
 
@@ -27,13 +25,23 @@ class ManageVariantController extends ManageBaseController{
         'variant' => 'shopy_product_variant',
     ];
 
-    public function getBreadcrumbs(){
+    public function initBreadcrumb(){
         $this->breadcrumbs = [
             [
-                'title' => 'Products',
-                'url' => route($this->modelRouteName. '.index', $this->routeParams)
+                'title' => 'Manage Products',
+                'url' => route('admin.products.index'),
+            ],
+            [
+                'title' => $this->routeParams['product']->getTitle(),
+                'url' => route('admin.products.show', $this->routeParams)
+            ],
+            [
+                'title' => 'Manage Variants',
+                'url' =>  route($this->modelRouteName. '.index', $this->routeParams)
             ]
         ];
+
+        return $this->breadcrumbs;
     }
 
     public function createTableFields(){
@@ -66,6 +74,10 @@ class ManageVariantController extends ManageBaseController{
 
     }
 
+    public function processQuery(Request $request, &$query){
+        $query->where('product_id', $this->routeParams['product']->id);
+    }
+
     public function createFormElements($isUpdate = false){
         $defaults = [
             'product_id' => [
@@ -76,7 +88,10 @@ class ManageVariantController extends ManageBaseController{
             'price' => [
                 'value' => $this->routeParams['product']->price
             ],
-            'count',
+            'count' => [
+                'type' => 'text',
+                'default' => 0
+            ],
             'is_sold_out' => [
                 'type' => 'checkbox'
             ],
@@ -148,6 +163,16 @@ class ManageVariantController extends ManageBaseController{
 
             $item->search = implode(',', $searches);
             $item->save();
+        }
+
+        if($item->product){
+            $item->product->updateTotalVariants();
+        }
+    }
+
+    public function afterUpdate(Request $request, $item){
+        if($item->product){
+            $item->product->updateTotalVariants();
         }
     }
 }

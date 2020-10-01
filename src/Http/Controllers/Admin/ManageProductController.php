@@ -8,6 +8,8 @@ use bachphuc\LaravelHTMLElements\Components\Section;
 use CustomField;
 
 use bachphuc\Shopy\Models\Product;
+use bachphuc\Shopy\Models\ProductVariant;
+use Illuminate\Http\Request;
 
 class ManageProductController extends ManageBaseController{
     protected $modelName = 'product';
@@ -19,7 +21,7 @@ class ManageProductController extends ManageBaseController{
 
     protected $itemDisplayField = 'title';
 
-    public function getBreadcrumbs(){
+    public function initBreadcrumb(){
         $this->breadcrumbs = [
             [
                 'title' => 'Products',
@@ -36,7 +38,7 @@ class ManageProductController extends ManageBaseController{
             ],
             'title' => [
                 'render' => function($item){
-                    $html = '<p><a target="_blank" href="'. $item->getHref() .'">'. $item->title . '</a></p>';
+                    $html = '<p>(' . $item->total_variants . ' '. trans('shopy::lang.variants') .') <a target="_blank" href="'. $item->getHref() .'">'. $item->title . '</a></p>';
                     $html.= '<p>'. str_limit($item->description, 180) . '</p>';
     
                     return $html;
@@ -89,19 +91,16 @@ class ManageProductController extends ManageBaseController{
                 'type' => 'GalleryImageElement'
             ],
             'alias' => 'title',
-            'group_3' => [
-                'type' => 'form_group',
-                'children' => [
-                    'is_hot' => [
-                        'type' => 'checkbox'
-                    ],
-                    'is_new' => [
-                        'type' => 'checkbox',
-                    ],
-                    'is_featured' => [
-                        'type' => 'checkbox'
-                    ],
-                ]
+            'form_group->' => [
+                'is_hot' => [
+                    'type' => 'checkbox'
+                ],
+                'is_new' => [
+                    'type' => 'checkbox',
+                ],
+                'is_featured' => [
+                    'type' => 'checkbox'
+                ],
             ],
         ];
 
@@ -113,8 +112,32 @@ class ManageProductController extends ManageBaseController{
     }
 
     public function editHook($item){
+        // create table
+        $items = ProductVariant::where('product_id', $item->id)
+        ->get();
 
-        $items = Product::all();
+        $variantTableFields = [
+            'image' => [
+                'type' => 'image'
+            ],
+            'id', 
+        ];
+
+        $customFields = CustomField::field('shopy_product', [
+            'field_type' => 'select_multi'
+        ]);
+
+        foreach($customFields as $field){
+            $variantTableFields[$field->alias] = [
+                'render' => function($item) use($field){
+                    return $item->getField($field->alias);
+                }
+            ];
+        }
+
+        $variantTableFields[] = 'price';
+        $variantTableFields[] = 'count';
+
 
         $component = new ViewGroup();
         $component->setTheme($this->getTheme());
@@ -124,15 +147,19 @@ class ManageProductController extends ManageBaseController{
                 'type' => 'button',
                 'title' => 'Create a new Product Variant',
                 'tag' => 'a',
-                'href' => route('admin.products.variants.index', [
+                'class' => 'btn-success',
+                'href' => route('admin.products.variants.create', [
                     'product' => $item
                 ])
             ], [
                 'type' => 'table',
-                'fields' => [
-                    'image' => ['type' => 'image'], 'id', 'title'
-                ],
-                'items' => $items
+                'fields' => $variantTableFields,
+                'items' => $items,
+                'isShowActionButtons' => true,
+                'model_route_name' => 'admin.products.variants',
+                'route_params' => [
+                    'product' => $item
+                ]
             ]
         ]);
 
@@ -141,5 +168,17 @@ class ManageProductController extends ManageBaseController{
             'key' => 'variants',
             'form' => $component
         ];
+    }
+
+    public function afterStore(Request $request, $item, $data){
+        if($item->category){
+            $item->category->updateTotalProducts();
+        }
+    }
+
+    public function afterUpdate(Request $request, $item){
+        if($item->category){
+            $item->category->updateTotalVariants();
+        }
     }
 }

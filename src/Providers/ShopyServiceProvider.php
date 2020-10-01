@@ -32,6 +32,9 @@ class ShopyServiceProvider extends ServiceProvider
         $this->loadViewsFrom($packagePath . '/resources/views', 'bachphuc.shopy');
 
         $this->loadMigrationsFrom($packagePath.'/database/migrations');
+
+        // boot translator
+        $this->loadTranslationsFrom($packagePath . '/resources/lang' , 'shopy');
     }
 
     /**

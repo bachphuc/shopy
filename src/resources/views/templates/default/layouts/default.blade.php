@@ -62,18 +62,7 @@
     <!-- Header Section End -->
 
     <!-- Breadcrumb Begin -->
-    <div class="breadcrumb-option">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="breadcrumb__links">
-                        <a href="/"><i class="fa fa-home"></i> Home</a>
-                        <a href="{{route('products.index')}}">Shop</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    @include(Shopy::viewPath('components.breadcrumbs'))
     <!-- Breadcrumb End -->
 
     @yield('content')

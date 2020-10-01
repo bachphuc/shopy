@@ -2,6 +2,8 @@
 
 namespace bachphuc\Shopy\Http\Controllers\Admin;
 
+use Illuminate\Http\Request;
+
 class ManageCategoryController extends ManageBaseController{
     protected $modelName = 'category';
     protected $model = '\bachphuc\Shopy\Models\Category';
@@ -24,6 +26,7 @@ class ManageCategoryController extends ManageBaseController{
             ],
             'parent_category_id' => [
                 'type' => 'select',
+                'default_value' => 0,
                 'options' => [
                     'model' => '\bachphuc\Shopy\Models\Category',
                 ]
@@ -41,7 +44,7 @@ class ManageCategoryController extends ManageBaseController{
 
         $this->breadcrumbs = [
             [
-                'title' => 'Products',
+                'title' => 'Categories',
                 'url' => route($this->modelRouteName. '.index')
             ]
         ];
@@ -53,13 +56,13 @@ class ManageCategoryController extends ManageBaseController{
             ],
             'title' => [
                 'render' => function($item){
-                    $html = '<p>'. $item->title . '</p>';
+                    $html = '<p><a href="' . $item->getHref() . '">' . $item->title . '</a> <a href="'. $item->getAdminHref() .'">('. $item->total_product .' '. trans('shopy::lang.products') .')</a></p>';
                     $html.= '<p>'. str_limit($item->description, 180) . '</p>';
     
                     return $html;
                 }
             ],
-            'total_product',
+            // 'total_product',
         ];
 
         parent::__construct();
@@ -67,5 +70,9 @@ class ManageCategoryController extends ManageBaseController{
 
     public function processTable(&$table){
 
+    }
+
+    public function afterUpdate(Request $request, $item){
+        $item->updateTotalVariants();
     }
 }

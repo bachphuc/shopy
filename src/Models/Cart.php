@@ -43,7 +43,8 @@ class Cart extends ProductBase
                 'price' => $price,
                 'count' => $count,
                 'amount' => $price * $count,
-                'cart_id' => $this->id
+                'cart_id' => $this->id,
+                'variant_id' => isset($params['variant_id']) ? $params['variant_id'] : 0,
             ]);
         }
 

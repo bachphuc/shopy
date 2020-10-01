@@ -33,7 +33,7 @@
                         <a href="{{route('login')}}">Login</a>
                         <a href="{{route('register')}}">Register</a>
                         @else
-                        <a href="{{route('account.orders')}}">Welcome {{user_name()}}</a>
+                        <a href="{{Shopy::route('account.orders')}}">Welcome {{user_name()}}</a>
                         @endif
                     </div>
                     <ul class="header__right__widget">
@@ -41,7 +41,7 @@
                         <li><a href="#"><span class="icon_heart_alt"></span>
                             <div class="tip">2</div>
                         </a></li>
-                        <li><a href="{{route('carts.index')}}"><span class="icon_bag_alt"></span>
+                        <li><a href="{{Shopy::route('carts.index')}}"><span class="icon_bag_alt"></span>
                             <div class="tip">{{Shopy::cartTotal()}}</div>
                         </a></li>
                     </ul>

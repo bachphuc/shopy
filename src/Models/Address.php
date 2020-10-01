@@ -42,4 +42,15 @@ class Address extends ProductBase
 
         return $address;
     }
+
+    public function getFullText(){
+        return $this->address . ', ' . $this->district . ', ' . $this->province;
+    }
+
+    public static function getAddressesOf($user = null){
+        if(!$user) return [];
+
+        return Address::where('user_id', $user->id)
+        ->get();
+    }
 }

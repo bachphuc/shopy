@@ -25,6 +25,11 @@ class CreateShopyOrdersTable extends Migration
             $table->string('delivery_status', 20)->nullable();
             $table->mediumText('note')->nullable();
             $table->integer('shipping_id')->default(0);
+            $table->dateTime('delivery_estimate_at')->nullable();
+            $table->dateTime('deliveried_at')->nullable();
+            $table->string('failure_reason')->nullable();
+            $table->string('payment_status')->nullable();
+            $table->decimal('shipping_fee', 15, 2)->nullable()->default(0);
 
             $table->timestamps();
         });

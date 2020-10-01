@@ -28,6 +28,10 @@ class CreateShopyProductsTable extends Migration
             $table->tinyInteger('is_hot')->default(0);
             $table->tinyInteger('is_new')->default(0);
             $table->tinyInteger('is_featured')->default(0);
+            $table->integer('total_variants')->default(0);
+            $table->integer('total_sold')->default(0);
+            $table->integer('total_view')->default(0);
+            $table->integer('total_click')->default(0);
 
             $table->timestamps();
         });

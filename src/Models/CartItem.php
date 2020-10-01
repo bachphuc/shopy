@@ -15,7 +15,7 @@ class CartItem extends ProductBase
      * @var array
      */
     protected $fillable = [
-        'user_id', 'cart_id', 'product_id', 'price', 'count', 'amount', 'currency',
+        'user_id', 'cart_id', 'product_id', 'price', 'count', 'amount', 'currency', 'variant_id',
     ];
 
     public function user(){
@@ -24,6 +24,10 @@ class CartItem extends ProductBase
 
     public function product(){
         return $this->belongsTo('bachphuc\Shopy\Models\Product', 'product_id');
+    }
+
+    public function variant(){
+        return $this->belongsTo('bachphuc\Shopy\Models\ProductVariant', 'variant_id');
     }
 
     public function updateAmount(){

@@ -5,6 +5,7 @@ namespace bachphuc\Shopy\Facades;
 use Illuminate\Support\Facades\Facade;
 
 use CustomField;
+use AppSetting;
 
 class ShopyFacade extends Facade
 {
@@ -86,6 +87,21 @@ class ShopyFacade extends Facade
             $router->resource('fields', $namespace . 'ProductFieldsController');
 
             $router->resource('products.variants', $namespace. 'ManageVariantController');
+
+            $router->resource('orders', $namespace . 'ManageOrderController');
+            $router->post('orders/{order}/confirm', $namespace . 'ManageOrderController@confirmOrder')->name('orders.confirm');
+            $router->post('orders/{order}/confirm-delivery', $namespace . 'ManageOrderController@confirmOrderDeliveried')->name('orders.confirm-delivery');
+            $router->post('orders/{order}/start-delivery', $namespace . 'ManageOrderController@startDelivery')->name('orders.start-delivery');
+            
+            $router->resource('customers', $namespace . 'ManageCustomerController');
+
+            $router->get('setup', $namespace. 'SetupController@index')->name('setup');
+            $router->post('setup', $namespace. 'SetupController@store')->name('setup.store');
+
+            AppSetting::routes([
+                'namespace' => $namespace,
+                'controller' => 'SettingController'
+            ]);
         });
     }
 

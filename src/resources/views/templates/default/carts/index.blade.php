@@ -42,7 +42,7 @@
                                     <td class="cart__total">$ {{$item->amount}}</td>
                                     <td class="cart__close">
                                         <span class="icon_close" onclick="document.getElementById('item-{{$item->product_id}}').submit()"></span>
-                                        @include(Shopy::viewPath('components.form-delete'), ['id' => $item->product_id, 'url' => route('carts.destroy', ['id' => $item->product_id])])
+                                        @include(Shopy::viewPath('components.form-delete'), ['id' => $item->product_id, 'url' => Shopy::route('carts.destroy', ['id' => $item->product_id])])
                                     </td>
                                 </tr>
                                 @endforeach
@@ -54,7 +54,7 @@
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-6">
                     <div class="cart__btn">
-                        <a href="{{route('products.index')}}">Continue Shopping</a>
+                        <a href="{{Shopy::route('products.index')}}">Continue Shopping</a>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6">
@@ -80,7 +80,7 @@
                             <li>Subtotal <span>$ {{Shopy::cartAmount()}}</span></li>
                             <li>Total <span>$ {{Shopy::cartAmount()}}</span></li>
                         </ul>
-                        <a href="{{route('carts.checkout')}}" class="primary-btn">Proceed to checkout</a>
+                        <a href="{{Shopy::route('carts.checkout')}}" class="primary-btn">Proceed to checkout</a>
                     </div>
                 </div>
             </div>

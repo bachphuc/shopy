@@ -23,7 +23,7 @@ class Category extends ProductBase
     ];
 
     public function getHref(){
-        return route('categories.show', ['alias' => !empty($this->alias) ? $this->alias : $this->id]);
+        return Shopy::route('categories.show', ['alias' => !empty($this->alias) ? $this->alias : $this->id]);
     }
 
     public function products(){
@@ -36,5 +36,15 @@ class Category extends ProductBase
         ->orwhere('alias', $alias)
         ->orWhere('title', $alias)
         ->first();
+    }
+
+    public function updateTotalVariants(){
+        $this->total_product = Product::where('category_id', $this->id)
+        ->count();
+        $this->save();
+    }
+
+    public function getAdminHref(){
+        return Shopy::adminRoute('categories.show', ['id' => $this->id]);
     }
 }

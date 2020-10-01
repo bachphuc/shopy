@@ -20,7 +20,8 @@ class AccountController extends Controller
 
     public function orderDetail(Request $request, Order $order){
         return Shopy::view('account.order-detail', [
-            'order' => $order
+            'order' => $order,
+            'steps' => $order->getSteps()
         ]); 
     }
 }

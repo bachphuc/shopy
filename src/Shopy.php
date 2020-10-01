@@ -13,9 +13,11 @@ class Shopy
     protected $customLayout = null;
     protected $layout = 'default';
     protected $theme = 'default';
+    protected $adminLayout = 'default';
 
     protected $_cart = null;
     protected $_categories = null;
+    protected $_shop = null;
 
     public function __construct(Version $version)
     {   
@@ -52,8 +54,12 @@ class Shopy
         return 'bachphuc.shopy::templates.' . $this->theme . '.layouts.' . $this->layout;
     }
 
+    public function setAdminLayout($layout){
+        $this->adminLayout = $layout;
+    }
+
     public function adminLayout(){
-        return 'bachphuc.shopy::admin.' . $this->theme . '.layouts.' . $this->layout;
+        return 'bachphuc.shopy::admin.' . $this->theme . '.layouts.' . $this->adminLayout;
     }
 
     public function cart(){
@@ -100,5 +106,26 @@ class Shopy
 
     public function adminAsset($path){
         return asset('assets/templates/default/admin/' . $path);
+    }
+
+    public function route($path, $params = []){
+        $request = request();
+        $shop = $request->route('shop');
+        if(!empty($shop)){
+            $params['shop'] = $shop;
+            $routeName = $request->route()->getName();
+            if(strpos($routeName, 'shop.') === 0){
+                $path = 'shop.' . $path;
+            }
+        }
+        return route($path, $params);
+    }
+
+    public function adminRoute($path, $params = []){
+        return route('admin.' . $path, $params);
+    }
+
+    public function addressesOf($user = null){
+        return Address::getAddressesOf($user);
     }
 }

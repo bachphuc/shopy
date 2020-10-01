@@ -57,4 +57,24 @@ class ProductVariant extends ProductBase
 
         return null;
     }
+
+    public function hasOption($field, $option){
+        $value = $this->getField($field);
+        return $value == $option ? true : false;
+    }
+
+    public function getPrice(){
+        return $this->price;
+    }
+
+    public function toArray(){
+        $this->initFields();
+        $results = parent::toArray();
+        return array_merge($results, $this->_extractFields);
+    }
+
+    public function fields(){
+        $this->initFields();
+        return $this->_extractFields;
+    }
 }

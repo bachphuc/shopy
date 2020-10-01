@@ -4,6 +4,10 @@ namespace bachphuc\Shopy\Models;
 
 use bachphuc\LaravelGalleryImage\Models\GalleryImage;
 
+use bachphuc\Shopy\Models\ProductVariant;
+
+use Shopy;
+
 class Product extends ProductBase
 {
     protected $table = 'shopy_products';
@@ -17,7 +21,7 @@ class Product extends ProductBase
      * @var array
      */
     protected $fillable = [
-        'title', 'image', 'description', 'user_id', 'price', 'count', 'alias', 'category_id', 'currency', 'alias', 'is_hot', 'is_new', 'is_featured'
+        'title', 'image', 'description', 'user_id', 'price', 'count', 'alias', 'category_id', 'currency', 'alias', 'is_hot', 'is_new', 'is_featured', 'total_variants', 'total_sold', 'total_view', 'total_click'
     ];
 
     public function user(){
@@ -30,9 +34,9 @@ class Product extends ProductBase
 
     public function getHref(){
         if(!empty($this->alias)){
-            return route('products.detail', ['alias' => $this->alias]);
+            return Shopy::route('products.detail', ['alias' => $this->alias]);
         }
-        return route('products.show', ['product' => $this]);
+        return Shopy::route('products.show', ['product' => $this]);
     }
 
     public static function findByName($alias){
@@ -58,5 +62,28 @@ class Product extends ProductBase
         ->get();
 
         return $products;
+    }
+
+    public function getVariants(){
+        return ProductVariant::where('product_id', $this->id)
+        ->get();
+    }
+
+    public function getPriceOf($variant = null){
+        if($variant){
+            return $variant->getPrice();
+        }
+        return $this->getPrice();
+    }
+
+    public function updateTotalVariants(){
+        $this->total_variants = ProductVariant::where('product_id', $this->id)
+        ->count();
+        
+        $this->save();
+    }
+
+    public function getAdminHref(){
+        return Shopy::adminRoute('products.show', ['product' => $this]);
     }
 }
