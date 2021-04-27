@@ -34,4 +34,12 @@ class CartItem extends ProductBase
         $this->amount = $this->price * $this->count;
         $this->save();
     }
+
+    public function displayAmount(){
+        return number_format($this->amount, 0, ',', '.') . ' VNĐ';
+    }
+
+    public function displayPrice(){
+        return number_format((int) $this->price, 0, ",", '.') . ' VNĐ';
+    }
 }

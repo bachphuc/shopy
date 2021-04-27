@@ -41,11 +41,17 @@ class AdminController extends Controller
             ]
         ]);
 
+        $totalEarn = (int) Order::where('status', Order::SUCCESS)
+        ->sum('amount');
+
         return Shopy::adminView('index', [
             'totalCustomers' => $totalCustomers,
             'totalOrders' => $totalOrders,
             'totalProducts' => $totalProducts,
-            'newOrdersTable' => $newOrdersTable
+            'newOrdersTable' => $newOrdersTable,
+            'totalEarn' => $totalEarn,
+            'menus' => Shopy::getAdminMenus(),
+            'colorTheme' => $this->colorTheme,
         ]);
     }
 }

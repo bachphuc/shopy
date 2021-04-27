@@ -25,8 +25,9 @@ class ManageCustomerController extends ManageBaseController{
 
     public function createFormElements($isUpdate = false){
         return [
-            'id',
-            'name',
+            'name' => [
+                'validator' => 'required'
+            ],
             'email',
         ];
     }
@@ -36,7 +37,7 @@ class ManageCustomerController extends ManageBaseController{
             'id',
             'name' => [
                 'render' => function($item){
-                    return '<a href="'. Shopy::adminRoute('customers.show', ['id' => $item->id]) . '">' . $item->name . '</a>';
+                    return '<a class="fast-link" href="'. Shopy::adminRoute('customers.show', ['id' => $item->id]) . '">' . $item->name . '</a>';
                 }
             ],
             'email',
@@ -59,16 +60,27 @@ class ManageCustomerController extends ManageBaseController{
                         return '<a href="' . $item->getAdminHref() . '">#' . $item->id . '</a>';
                     }
                 ],
-                'amount',
+                'amount' => [
+                    'type' => 'int'
+                ],
                 'created_at',
-                'status'
+                'status' => [
+                    'label' => [
+                        'pending' => 'danger',
+                        'success' => 'success',
+                        'admin_confirmed' => 'info',
+                        'shipping_confirm' => 'danger',
+                    ]
+                ]
             ]
         ]);
         
         return Shopy::adminView('customers.show', [
             'activeMenu' => $this->activeMenu,
             'user' => $user,
-            'orderTable' => $orderTable
+            'orderTable' => $orderTable,
+            'menus' => $this->getMenus(),
+            'colorTheme' => $this->getColorTheme(),
         ]);
     }
 }

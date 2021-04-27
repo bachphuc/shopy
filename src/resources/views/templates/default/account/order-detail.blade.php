@@ -1,24 +1,24 @@
-@extends(Shopy::layout())
+@extends(Shopy::viewPath('account.account-layout'))
 
-@section('content')
-    <section class="shop-cart">
+@section('account-content')
+    <section>
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <div>
-                        <h4>Order No#{{$order->id}}</h4>
+                        <h4 class="text-uppercase">Order No#{{$order->id}}</h4>
                     </div>
-                    <div>
+                    <div class="mt-3">
                         @include(Shopy::viewPath('components.order-steps'))
                     </div>
-                    <div class="shop__cart__table">
+                    <div class="shop__cart__table mt-4">
                         <table>
                             <thead>
                                 <th>Image</th>
                                 <th>Product</th>
                                 <th>Price</th>
-                                <th>Count</th>
-                                <th>Amount</th>
+                                <th class="text-right">Count</th>
+                                <th class="text-right">Amount</th>
                             </thead>
                             <tbody>
                                 @foreach($order->items() as $item)
@@ -27,16 +27,16 @@
                                         <img src="{{$item->product->getImage()}}" alt="{{$item->product->getTitle()}}" style="max-width: 72px;">
                                     </td>
                                     <td><a href="{{$item->product->getHref()}}">{{$item->product->getTitle()}}</a></td>
-                                    <td>{{$item->price}}</td>
-                                    <td>{{$item->count}}</td>
-                                    <td class="text-uppercase">{{$item->currency}} {{$item->amount}}</td>
+                                    <td>{{(int) $item->price}}</td>
+                                    <td class="text-right">{{$item->count}}</td>
+                                    <td class="text-uppercase text-right">{{(int) $item->amount}} <small>{{$item->currency}}</small></td>
                                 </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
                     <div>
-                        <h5 class="text-right"><strong>Total</strong>: ${{$order->amount}}</h5>
+                        <h5 class="text-right"><strong>Total</strong>: {{$order->displayAmount()}} <small class="text-uppercase">{{$order->currency}}</small></h5>
                     </div>
                 </div>
             </div>

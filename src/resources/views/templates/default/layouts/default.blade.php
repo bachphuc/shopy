@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="{{Shopy::asset('css/slicknav.min.css')}}" type="text/css">
     <link rel="stylesheet" href="{{Shopy::asset('css/style.css')}}" type="text/css">
 
+    @include(Shopy::viewPath('styles.style'))
     @stack('styles')
 </head>
 
@@ -152,11 +153,9 @@
     <script src="{{Shopy::asset('js/jquery.nicescroll.min.js')}}"></script>
     <script src="{{Shopy::asset('js/main.js')}}"></script>
 
-    <script>
-        window.addEventListener('load', () => {
-            
-        });
-    </script>
+    @stack('scripts')
+
+    @include(Shopy::viewPath('scripts.script'))
 </body>
 
 </html>

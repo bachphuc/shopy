@@ -29,12 +29,14 @@ class ShopyServiceProvider extends ServiceProvider
         $packagePath = dirname(__DIR__);
 
         // register view
-        $this->loadViewsFrom($packagePath . '/resources/views', 'bachphuc.shopy');
+        $this->loadViewsFrom($packagePath . '/resources/views', 'shopy');
 
         $this->loadMigrationsFrom($packagePath.'/database/migrations');
 
         // boot translator
         $this->loadTranslationsFrom($packagePath . '/resources/lang' , 'shopy');
+
+        \HtmlElement::mapNamespace('shopy', '\bachphuc\Shopy');
     }
 
     /**

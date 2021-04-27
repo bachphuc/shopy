@@ -5,15 +5,15 @@
     <section class="shop-cart spad">
         <div class="container">
             <div class="row">
-                <div class="col-lg-12">
+                <div class="col-lg-8">
                     <div class="shop__cart__table">
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Product</th>
-                                    <th>Price</th>
-                                    <th>Quantity</th>
-                                    <th>Total</th>
+                                    <th>@lang('shopy::lang.product')</th>
+                                    <th>@lang('shopy::lang.price')</th>
+                                    <th>@lang('shopy::lang.quantity')</th>
+                                    <th>@lang('shopy::lang.total')</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -33,13 +33,13 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="cart__price">$ {{$item->price}}</td>
+                                    <td class="cart__price">{{$item->displayPrice()}}</td>
                                     <td class="cart__quantity">
                                         <div class="pro-qty">
                                             <input type="text" value="{{$item->count}}">
                                         </div>
                                     </td>
-                                    <td class="cart__total">$ {{$item->amount}}</td>
+                                    <td class="cart__total">{{$item->displayAmount()}}</td>
                                     <td class="cart__close">
                                         <span class="icon_close" onclick="document.getElementById('item-{{$item->product_id}}').submit()"></span>
                                         @include(Shopy::viewPath('components.form-delete'), ['id' => $item->product_id, 'url' => Shopy::route('carts.destroy', ['id' => $item->product_id])])
@@ -48,40 +48,41 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        @if(!Shopy::cart()->items()->count())
+                        <p class="mt-3">@lang('shopy::lang.cart_empty')</p>
+                        @endif
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="cart__total__procced">
+                        <h6>Cart total</h6>
+                        <ul>
+                            <li>Subtotal <span>{{Shopy::displayCartAmount()}}</span></li>
+                            <li>Total <span>{{Shopy::displayCartAmount()}}</span></li>
+                        </ul>
+                        <a href="{{Shopy::route('carts.checkout')}}" class="primary-btn">@lang('shopy::lang.process_to_checkout')</a>
+                    </div>
+
+                    <div class="discount__content mt-3">
+                        <h6>Discount codes</h6>
+                        <form action="#">
+                            <input type="text" placeholder="Enter your coupon code">
+                            <button type="submit" class="site-btn">@lang('shopy::lang.apply')</button>
+                        </form>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-6">
                     <div class="cart__btn">
-                        <a href="{{Shopy::route('products.index')}}">Continue Shopping</a>
+                        <a href="{{Shopy::route('products.index')}}">@lang('shopy::lang.continue_shopping')</a>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6">
                     {{-- <div class="cart__btn update__btn">
                         <a href="#"><span class="icon_loading"></span> Update cart</a>
                     </div> --}}
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="discount__content">
-                        <h6>Discount codes</h6>
-                        <form action="#">
-                            <input type="text" placeholder="Enter your coupon code">
-                            <button type="submit" class="site-btn">Apply</button>
-                        </form>
-                    </div>
-                </div>
-                <div class="col-lg-4 offset-lg-2">
-                    <div class="cart__total__procced">
-                        <h6>Cart total</h6>
-                        <ul>
-                            <li>Subtotal <span>$ {{Shopy::cartAmount()}}</span></li>
-                            <li>Total <span>$ {{Shopy::cartAmount()}}</span></li>
-                        </ul>
-                        <a href="{{Shopy::route('carts.checkout')}}" class="primary-btn">Proceed to checkout</a>
-                    </div>
                 </div>
             </div>
         </div>

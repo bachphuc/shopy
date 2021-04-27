@@ -111,6 +111,12 @@ class ManageProductController extends ManageBaseController{
         return $elements;
     }
 
+    public function initFormInput($isUpdate = false){
+        parent::initFormInput($isUpdate);
+
+        $this->form->setAttribute('ajax', true);
+    }
+
     public function editHook($item){
         // create table
         $items = ProductVariant::where('product_id', $item->id)
@@ -178,7 +184,7 @@ class ManageProductController extends ManageBaseController{
 
     public function afterUpdate(Request $request, $item){
         if($item->category){
-            $item->category->updateTotalVariants();
+            $item->category->updateTotalProducts();
         }
     }
 }

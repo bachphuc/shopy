@@ -199,4 +199,8 @@ class Order extends ProductBase
 
         return $steps;
     }
+
+    public function displayAmount(){
+        return (int) $this->amount;
+    }
 }

@@ -48,6 +48,8 @@ class ShopyFacade extends Facade
         $router->post('cart/place-order', $namespace. 'CartController@placeOrder')->name('carts.place-order');
 
         $router->get('categories/{alias}', $namespace. 'CategoryController@show')->name('categories.show');
+        
+        \Feedback::routes();
     }
 
     /**
@@ -58,11 +60,13 @@ class ShopyFacade extends Facade
     public static function accountRoutes()
     {
         $router = static::$app->make('router');
-
-        $namespace = '\bachphuc\Shopy\Http\Controllers\\';
-
-        $router->get('account/orders', $namespace. 'AccountController@orders')->name('account.orders');
-        $router->get('account/orders/{order}', $namespace. 'AccountController@orderDetail')->name('orders.show');
+        $router->group(['prefix' => 'account'], function($router){
+            $namespace = '\bachphuc\Shopy\Http\Controllers\\';
+            
+            $router->get('orders', $namespace. 'AccountController@orders')->name('account.orders');
+            $router->get('orders/{order}', $namespace. 'AccountController@orderDetail')->name('orders.show');
+            $router->resource('addresses', $namespace. 'AddressController');
+        });
     }
 
     /**

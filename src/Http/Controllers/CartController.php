@@ -9,6 +9,8 @@ use bachphuc\Shopy\Models\Product;
 use bachphuc\Shopy\Models\Address;
 use bachphuc\Shopy\Models\Order;
 
+use Session;
+
 class CartController extends Controller
 {
     public function index(){
@@ -29,7 +31,14 @@ class CartController extends Controller
 
         Shopy::cart()->addProduct($product, $data);
 
-        return redirect()->to($product->getHref());
+        if($request->ajax()){
+            return Shopy::view('components.mini-cart', [
+                'full' => false,
+                'newProductId' => $product->id
+            ]);
+        }
+
+        return redirect()->to($product->getHref() . '?show_cart=1');
     }
 
     public function destroy(Request $request, $id){
@@ -70,6 +79,19 @@ class CartController extends Controller
             $address = Address::find($data['address_id']);
         }
 
+        return Shopy::view('carts.payment-method', [
+            'address' => $address
+        ]);
+    }
+
+    public function placeOrder(Request $request){
+        $request->validate([
+            'payment_method' => 'required',
+            'address_id' => 'required',
+        ]);
+
+        $address = Address::find($request->input('address_id'));
+
         $params = [
             'shipping_id' => $address->id
         ];
@@ -80,22 +102,6 @@ class CartController extends Controller
         
         $order = Order::createFromCart($params);
 
-        return Shopy::view('carts.payment-method', [
-            'order' => $order
-        ]);
-    }
-
-    public function placeOrder(Request $request){
-        $request->validate([
-            'payment_method' => 'required',
-            'order_id' => 'required'
-        ]);
-
-        $order = Order::find($request->input('order_id'));
-        if(!$order){
-            abort(404);
-        }
-
         $data = $request->all();
 
         if($data['payment_method'] === 'cod'){
@@ -104,6 +110,8 @@ class CartController extends Controller
         else{
             // handle payment gateway here
         }
+
+        Session::flash('message', trans('shopy::message.place_order_successfull'));
 
         return redirect()->to('');
     }

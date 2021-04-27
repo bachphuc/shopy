@@ -10,8 +10,7 @@ class ManageCategoryController extends ManageBaseController{
     protected $activeMenu = 'categories';
     protected $searchFields = ['title', 'description'];
     protected $modelRouteName = 'admin.categories';
-    // protected $authMiddleware = 'auth';
-
+    protected $modelWiths = ['category'];
     protected $itemDisplayField = 'title';
 
     public function __construct(){
@@ -62,7 +61,13 @@ class ManageCategoryController extends ManageBaseController{
                     return $html;
                 }
             ],
-            // 'total_product',
+            'category' => [
+                'title' => trans('shopy::lang.parent_category'),
+                'render' => function($item){
+                    if(!$item->category) return;
+                    return $item->category->getTitle();
+                }
+            ]
         ];
 
         parent::__construct();
@@ -73,6 +78,12 @@ class ManageCategoryController extends ManageBaseController{
     }
 
     public function afterUpdate(Request $request, $item){
-        $item->updateTotalVariants();
+        $item->updateTotalProducts();
+    }
+
+    public function initFormInput($isUpdate = false){
+        parent::initFormInput($isUpdate);
+
+        $this->form->setAttribute('ajax', true);
     }
 }

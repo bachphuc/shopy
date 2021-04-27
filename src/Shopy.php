@@ -31,7 +31,7 @@ class Shopy
 
     public function viewPath($path)
     {
-        return 'bachphuc.shopy::templates.'. $this->theme . '.' . $path;
+        return 'shopy::templates.'. $this->theme . '.' . $path;
     }
 
     public function adminView($path, $data = [])
@@ -40,7 +40,7 @@ class Shopy
     }
 
     public function adminViewPath($path){
-        return 'bachphuc.shopy::admin.'. $this->theme . '.' . $path;
+        return 'shopy::admin.'. $this->theme . '.' . $path;
     }
 
     public function setLayout($layout)
@@ -51,7 +51,7 @@ class Shopy
     public function layout()
     {
         if(!empty($this->customLayout)) return $this->customLayout;
-        return 'bachphuc.shopy::templates.' . $this->theme . '.layouts.' . $this->layout;
+        return 'shopy::templates.' . $this->theme . '.layouts.' . $this->layout;
     }
 
     public function setAdminLayout($layout){
@@ -59,7 +59,10 @@ class Shopy
     }
 
     public function adminLayout(){
-        return 'bachphuc.shopy::admin.' . $this->theme . '.layouts.' . $this->adminLayout;
+        if(is_modal_request()){
+            return 'bachphuc.elements::layouts.blank';
+        }
+        return 'bachphuc.elements::layouts.admin';
     }
 
     public function cart(){
@@ -85,7 +88,11 @@ class Shopy
     }
 
     public function cartAmount(){
-        return $this->cart()->amount;
+        return (int) $this->cart()->amount;
+    }
+
+    public function displayCartAmount(){
+        return number_format($this->cartAmount(), 0, ',', '.') . ' VNĐ';
     }
 
     public function userShippingAddresses(){
@@ -98,6 +105,11 @@ class Shopy
         $this->_categories = Category::all();
 
         return $this->_categories;
+    }
+
+    public function parentCategories(){
+        return Category::where('parent_category_id', 0)
+        ->get();
     }
 
     public function asset($path){
@@ -127,5 +139,64 @@ class Shopy
 
     public function addressesOf($user = null){
         return Address::getAddressesOf($user);
+    }
+
+    public function getAdminMenus(){
+        return [
+            [
+                'title' => 'Dashboard',
+                'icon' => 'dashboard',
+                'url' => url('admin'),
+                'key' => 'dashboard',
+            ], [
+                'title' => 'Orders',
+                'icon' => 'list_alt',
+                'key' => 'orders',
+                'subs' => [
+                    [
+                        'title' => trans('shopy::lang.pending_orders'),
+                        'url' => url('admin/orders?status=pending'),
+                        'key' => 'pending_orders',
+                        'icon' => 'list_alt',
+                    ]
+                    , [
+                        'title' => trans('shopy::lang.all_orders'),
+                        'url' => url('admin/orders'),
+                        'key' => 'all_orders',
+                        'icon' => 'list_alt',
+                    ]
+                ]
+            ], [
+                'title' => 'Categories',
+                'icon' => 'category',
+                'url' => route('admin.categories.index'),
+                'key' => 'categories',
+            ], [
+                'title' => 'Products',
+                'icon' => 'dashboard',
+                'url' => route('admin.products.index'),
+                'key' => 'products',
+            ], [
+                'title' => 'Customers',
+                'icon' => 'supervised_user_circle',
+                'url' => route('admin.customers.index'),
+                'key' => 'customers',
+            ], [
+                'title' => 'Reports',
+                'icon' => 'bar_chart',
+                'url' => url('admin/reports'),
+                'key' => 'reports',
+            ],[
+                'title' => 'Fields',
+                'icon' => 'dashboard',
+                'url' => route('admin.fields.index'),
+                'key' => 'fields'
+            ], [
+                'title' => 'Settings',
+                'icon' => 'settings',
+                'url' => url('admin/settings'),
+                'key' => 'settings'
+            ]
+        ];
     }
 }

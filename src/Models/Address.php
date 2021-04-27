@@ -24,6 +24,10 @@ class Address extends ProductBase
         return $this->belongsTo('\App\User', 'user_id');
     }
 
+    public function getTitle(){
+        return $this->address;
+    }
+
     public static function getUserAddresses(){
         if(self::$_addresses !== null) return self::$_addresses;
         self::$_addresses = Address::where('user_id', user_id())

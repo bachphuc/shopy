@@ -20,6 +20,7 @@
                                 <div class="col-md-3">
                                     <h4 class="text-uppercase">@lang('shopy::lang.customer_information')</h4>
                                     <div>
+                                        <p class="text-primary">{{$user->name}}</p>
                                         <p>{{$user->email}}</p>
                                     </div>
                                     <h4 class="text-uppercase">@lang('shopy::lang.shipping_address')</h4>

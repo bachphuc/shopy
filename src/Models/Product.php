@@ -33,10 +33,13 @@ class Product extends ProductBase
     }
 
     public function getHref(){
-        if(!empty($this->alias)){
-            return Shopy::route('products.detail', ['alias' => $this->alias]);
+        if(empty($this->alias)){
+            // update alias
+            $this->alias = str_slug($this->title) . '-' . $this->id;
+            $this->save();
         }
-        return Shopy::route('products.show', ['product' => $this]);
+
+        return Shopy::route('products.detail', ['alias' => $this->alias]);
     }
 
     public static function findByName($alias){
@@ -49,12 +52,23 @@ class Product extends ProductBase
 
     public function getImages(){
         if($this->_images !== null) return $this->_images;
-        $this->_images = GalleryImage::getImagesOf($this);
+        $imgs = GalleryImage::getImagesOf($this);
+
+        if($imgs->count()){
+            $this->_images = $imgs;
+        }
+        else{
+            $this->_images = [$this];
+        }
         return $this->_images;
     }
 
     public function getPrice(){
         return $this->price;
+    }
+
+    public function displayPrice(){
+        return number_format((int) $this->price, 0, ",", '.') . ' VNĐ';
     }
 
     public function getRelated(){

@@ -6,6 +6,9 @@
                     <div class="footer__logo">
                         <a href="/"><img src="/assets/templates/default/img/logo.png" alt=""></a>
                     </div>
+                    <p><strong>{{setting('shopy_general.name')}}</strong>, {{setting('shopy_general.address')}}, {{setting('shopy_general.district')}}, {{setting('shopy_general.province')}}</p>
+                    <p>Email: <a href="">{{setting('shopy_general.contact_email')}}</a></p>
+                    <p>Phone: {{setting('shopy_general.contact_phone')}}</p>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
                     cilisis.</p>
                     <div class="footer__payment">

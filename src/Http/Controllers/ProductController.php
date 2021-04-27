@@ -17,12 +17,12 @@ class ProductController extends Controller
 
         $this->breadcrumbs = [
             [
-                'title' => 'Home',
+                'title' => trans('shopy::lang.home'),
                 'url' => url(''),
                 'icon' => '<i class="fa fa-home"></i>'
             ],
             [
-                'title' => 'Products',
+                'title' => trans('shopy::lang.products'),
                 'url' => Shopy::route('products.index')
             ]
         ];
@@ -30,6 +30,8 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
+        $params = $request->all();
+
         $products = Product::all();
         return Shopy::view('products.index', [
             'products' => $products,

@@ -10,6 +10,7 @@ use bachphuc\LaravelHTMLElements\Components\Table;
 use bachphuc\LaravelHTMLElements\Components\ViewGroup;
 use bachphuc\LaravelHTMLElements\Components\Form;
 use bachphuc\LaravelHTMLElements\Components\FormSteps;
+use AppSetting;
 
 use App\User;
 
@@ -23,100 +24,90 @@ class SetupController extends Controller
             'show_submit_button' => false,
             'action' => Shopy::adminRoute('setup.store'),
             'has_file' => true,
-            'children' => [
-                'tab->navClass:nav-pills nav-pills-primary' => [
-                    'id:information;title:Information' => [
-                        'name' => [
-                            'validator' => 'required'
-                        ],
-                        'logo' => [
-                            'type' => 'image_input'
-                        ],
-                        'contact_email' => [
-                            'validator' => 'required'
-                        ],
-                        'contact_phone' => [
-                            'validator' => 'required'
-                        ],
-                        'province' => [
-                            'validator' => 'required'
-                        ],
-                        'district' => [
-                            'validator' => 'required'
-                        ],
-                        'ward' => [
-                            'validator' => 'required'
-                        ],
-                        'address' => [
-                            'validator' => 'required'
-                        ],
-                        [
-                            'type' => 'button',
-                            'title' => 'Next',
-                            'class' => 'btn-primary btn-next-tab',
-                        ]
-                    ], 
-                    'id:category;title:Category' => [
-                        'category' => [
-                            'type' => 'select',
-                            'value' => 'fashion',
-                            'options' => [
-                                'data' => [
-                                    [
-                                        'title' => 'Fashion',
-                                        'value' => 'fashion'
-                                    ],
-                                    [
-                                        'title' => 'Cellphone',
-                                        'value' => 'cellphone'
-                                    ]
-                                ]
-                            ]
-                        ],
-                        [
-                            'type' => 'button',
-                            'class' => 'btn-primary btn-next-tab',
-                            'title' => 'Next',
-                        ]
+            'steps' => [
+                'id:information;title:Information' => [
+                    'name' => [
+                        'validator' => 'required'
                     ],
-                    'id:theme;title:Theme' => [
-                        'theme' => [
-                            'type' => 'select',
-                            'options' => [
-                                'data' => [
-                                    [
-                                        'title' => 'Default',
-                                        'value' => 'default' 
-                                    ]
-                                ]
-                            ]
-                        ],
-                        [
-                            'type' => 'button',
-                            'title' => 'Next',
-                            'class' => 'btn-primary btn-next-tab',
-                        ]
+                    'logo' => [
+                        'type' => 'image_input'
                     ],
-                    'id:sample;title:Sample Data' => [
-                        'create_sample_data' => [
-                            'title' => 'Do you want to create sample data for your shop?',
-                            'type' => 'select_multi',
-                            'value' => 'yes',
-                            'options' => [
-                                'data' => [
-                                    [
-                                        'title' => 'Yes',
-                                        'value' => 'yes'
-                                    ],
-                                    [
-                                        'title' => 'No',
-                                        'value' => 'no'
-                                    ]
-                                ]
-                            ]
-                        ],
-                        'button->title:Submit;button_type:submit;class:btn-success'
+                    'contact_email' => [
+                        'validator' => 'required'
+                    ],
+                    'contact_phone' => [
+                        'validator' => 'required'
+                    ],
+                    'province' => [
+                        'validator' => 'required'
+                    ],
+                    'district' => [
+                        'validator' => 'required'
+                    ],
+                    'ward' => [
+                        'validator' => 'required'
+                    ],
+                    'address' => [
+                        'validator' => 'required'
+                    ],
+                    [
+                        'type' => 'button',
+                        'title' => 'Next',
+                        'class' => 'btn-primary btn-next-tab',
                     ]
+                ], 
+                'id:category;title:Category' => [
+                    'category' => [
+                        'type' => 'select',
+                        'value' => 'fashion',
+                        'validator' => 'required',
+                        'options' => [
+                            'data' => [
+                                [
+                                    'title' => 'Fashion',
+                                    'value' => 'fashion'
+                                ],
+                                [
+                                    'title' => 'Cellphone',
+                                    'value' => 'cellphone'
+                                ]
+                            ]
+                        ]
+                    ],
+                    [
+                        'type' => 'button',
+                        'class' => 'btn-primary btn-next-tab',
+                        'title' => 'Next',
+                    ]
+                ],
+                'id:theme;title:Theme' => [
+                    'theme' => [
+                        'type' => 'select',
+                        'value' => 'default',
+                        'validator' => 'required',
+                        'options' => [
+                            'data' => [
+                                [
+                                    'title' => 'Default',
+                                    'value' => 'default' 
+                                ]
+                            ]
+                        ]
+                    ],
+                    [
+                        'type' => 'button',
+                        'title' => 'Next',
+                        'class' => 'btn-primary btn-next-tab',
+                    ]
+                ],
+                'id:sample;title:Sample Data' => [
+                    'create_sample_data' => [
+                        'title' => 'Do you want to create sample data for your shop?',
+                        'type' => 'checkbox',
+                        'label' => 'yes',
+                        'value' => 1
+                    ],
+                    'button->title:Submit;button_type:submit;class:btn-success'
                 ]
             ]
         ]);
@@ -135,6 +126,16 @@ class SetupController extends Controller
             'form' => $form
         ]);
 
+        $fields = $form->getData();
+        $data = [];
+        foreach($fields as $key => $value){
+            $data[$key] = setting('shopy_general.' . $key);
+        }
+
+        if(!empty($data)){
+            $form->populate($data);
+        }
+
         return Shopy::adminView('setup.index', [
             'formStep' => $formStep
         ]);
@@ -146,6 +147,11 @@ class SetupController extends Controller
 
         $data = $form->getData();
 
-        return $data;
+        $settingGroupKey = 'shopy_general';
+        foreach($data as $key => $value){
+            AppSetting::saveSetting($settingGroupKey . '.' . $key, $value);
+        }
+
+        return redirect()->to(Shopy::adminRoute('index'));
     }
 }

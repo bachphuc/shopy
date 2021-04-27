@@ -22,6 +22,10 @@ class Category extends ProductBase
         'user_id', 'title', 'alias', 'description', 'image', 'thumbnail_120', 'thumbnail_300', 'thumbnail_500', 'thumbnail_720', 'parent_category_id', 'gender', 'total_product',
     ];
 
+    public function category(){
+        return $this->belongsTo('\bachphuc\Shopy\Models\Category', 'parent_category_id');
+    }
+
     public function getHref(){
         return Shopy::route('categories.show', ['alias' => !empty($this->alias) ? $this->alias : $this->id]);
     }
@@ -38,7 +42,7 @@ class Category extends ProductBase
         ->first();
     }
 
-    public function updateTotalVariants(){
+    public function updateTotalProducts(){
         $this->total_product = Product::where('category_id', $this->id)
         ->count();
         $this->save();
@@ -46,5 +50,10 @@ class Category extends ProductBase
 
     public function getAdminHref(){
         return Shopy::adminRoute('categories.show', ['id' => $this->id]);
+    }
+
+    public function getChildren(){
+        return Category::where('parent_category_id', $this->id)
+        ->get();
     }
 }

@@ -19,7 +19,7 @@
                 <i class="fa fa-star"></i>
                 <i class="fa fa-star"></i>
             </div>
-            <div class="product__price">$ {{$product->price}}</div>
+            <div class="product__price">{{$product->displayPrice()}}</div>
         </div>
     </div>
 </div>

@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-lg-12 text-center">
         <div class="related__title">
-            <h5>RELATED PRODUCTS</h5>
+            <h5>@lang('shopy::lang.related_product')</h5>
         </div>
     </div>
 

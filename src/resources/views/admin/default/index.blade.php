@@ -56,11 +56,11 @@
         <div class="col-lg-3 col-md-6 col-sm-6">
             <div class="card card-stats">
                 <div class="card-header" data-background-color="blue">
-                    <i class="material-icons">event</i>
+                    <i class="material-icons">monetization_on</i>
                 </div>
                 <div class="card-content">
-                    <p class="category">Today Posts</p>
-                    <h3 class="title">0</h3>
+                    <p class="category">@lang('shopy::lang.total_earn')</p>
+                    <h3 class="title">{{$totalEarn}}</h3>
                 </div>
                 <div class="card-footer">
                     <div class="stats">
@@ -94,8 +94,8 @@
             <div class="ct-chart" id="websiteViewsChart"></div>
           </div>
           <div class="card-body card-content">
-            <h4 class="card-title">Email Subscriptions</h4>
-            <p class="card-category">Last Campaign Performance</p>
+            <h4 class="card-title">New Customers</h4>
+            <p class="card-category">234 customers increase 14%</p>
           </div>
           <div class="card-footer">
             <div class="stats">
@@ -110,8 +110,8 @@
             <div class="ct-chart" id="completedTasksChart"></div>
           </div>
           <div class="card-body card-content">
-            <h4 class="card-title">Completed Tasks</h4>
-            <p class="card-category">Last Campaign Performance</p>
+            <h4 class="card-title">Customer Returns</h4>
+            <p class="card-category">12 customers return increase 20%</p>
           </div>
           <div class="card-footer">
             <div class="stats">
@@ -122,6 +122,20 @@
       </div>
     </div>
     <div class="row">
+      <!-- new orders -->
+      <div class="col-lg-6 col-md-12">
+        <div class="card">
+          <div class="card-header card-header-warning" data-background-color="purple">
+            <h4 class="card-title">@lang('shopy::lang.new_orders')</h4>
+            <p class="card-category">Orders from last 24 hours</p>
+          </div>
+          <div class="card-body table-responsive card-content">
+            {!! $newOrdersTable->render() !!}
+          </div>
+        </div>
+      </div>
+
+      <!-- other tab content -->
       <div class="col-lg-6 col-md-12">
         <div class="card card-nav-tabs">
           <div class="card-header card-header-tabs card-header-primary" data-background-color="purple">
@@ -368,17 +382,7 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-6 col-md-12">
-        <div class="card">
-          <div class="card-header card-header-warning" data-background-color="purple">
-            <h4 class="card-title">@lang('shopy::lang.new_orders')</h4>
-            <p class="card-category">Orders from last 24 hours</p>
-          </div>
-          <div class="card-body table-responsive card-content">
-            {!! $newOrdersTable->render() !!}
-          </div>
-        </div>
-      </div>
+      
     </div>
   </div>
 @endsection

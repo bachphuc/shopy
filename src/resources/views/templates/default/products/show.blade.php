@@ -74,21 +74,14 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="product__details__text">
-                        <form action="{{Shopy::route('carts.store')}}" method="POST">
+                        <form action="{{Shopy::route('carts.store')}}" method="POST" onsubmit="return Shopy.addProduct(this);">
                             {{csrf_field()}}
                             <input type="hidden" name="product_id" value="{{$product->id}}" />
                             <input id="variant_id" type="hidden" name="variant_id" value="{{isset($selectedVariant) ? $selectedVariant->id : 0}}" />
                             <h3>{{$product->getTitle()}} 
                                 @if($product->hasCustomField('brand'))<span>Brand: {{$product->field('brand')}}</span>@endif
                             </h3>
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <span>( 138 reviews )</span>
-                            </div>
+                            <div>@element('rating-bar', ['item' => $product])</div>
                             <div class="product__details__price">$ <span id="product__details__price_amount">{{$product->getPriceOf($selectedVariant)}}</span> <span class="product__details__price__discount">$ 83.0</span></div>
                             
                             <div class="product__details__button">
@@ -98,7 +91,7 @@
                                         <input name="count" type="text" value="1" />
                                     </div>
                                 </div>
-                                <button class="cart-btn" type="submit"><span class="icon_bag_alt"></span> Add to cart</button>
+                                <button class="cart-btn" type="submit"><span class="icon_bag_alt"></span> @lang('shopy::lang.add_to_cart')</button>
                                 <ul>
                                     <li><a href="#"><span class="icon_heart_alt"></span></a></li>
                                     <li><a href="#"><span class="icon_adjust-horiz"></span></a></li>
@@ -150,55 +143,39 @@
                     <div class="product__details__tab">
                         <ul class="nav nav-tabs" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">Description</a>
+                                <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">@lang('shopy::lang.description')</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab">Specification</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab">Reviews ( 2 )</a>
+                                <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab">@lang('shopy::lang.reviews')</a>
                             </li>
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane active" id="tabs-1" role="tabpanel">
-                                <h6>Description</h6>
+                                <h6>@lang('shopy::lang.description')</h6>
                                 <p>{{$product->description}}</p>
                                 @if($product->hasCustomField('privacy'))
                                 <h6>Privacy</h6>
                                 <p>{{$product->field('privacy')}}</p>
                                 @endif
                             </div>
-                            <div class="tab-pane" id="tabs-2" role="tabpanel">
-                                <h6>Specification</h6>
-                                <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut loret fugit, sed
-                                    quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt loret.
-                                    Neque porro lorem quisquam est, qui dolorem ipsum quia dolor si. Nemo enim ipsam
-                                    voluptatem quia voluptas sit aspernatur aut odit aut loret fugit, sed quia ipsu
-                                    consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Nulla
-                                consequat massa quis enim.</p>
-                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget
-                                    dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes,
-                                    nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium
-                                quis, sem.</p>
-                            </div>
                             <div class="tab-pane" id="tabs-3" role="tabpanel">
-                                <h6>Reviews ( 2 )</h6>
-                                <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut loret fugit, sed
-                                    quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt loret.
-                                    Neque porro lorem quisquam est, qui dolorem ipsum quia dolor si. Nemo enim ipsam
-                                    voluptatem quia voluptas sit aspernatur aut odit aut loret fugit, sed quia ipsu
-                                    consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Nulla
-                                consequat massa quis enim.</p>
-                                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget
-                                    dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes,
-                                    nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium
-                                quis, sem.</p>
+                                @element('review-block', ['item' => $product])
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             @include(Shopy::viewPath('products.related'), ['product' => $product])
+
+            <div>
+                <h4>@lang('shopy::lang.comments')</h4>
+                <div>
+                    @element('comment-block', [
+                        'item' => $product
+                    ])
+
+                </div>
+            </div>
         </div>
     </section>
     <!-- Product Details Section End -->

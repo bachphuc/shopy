@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use bachphuc\PhpLaravelHelpers\WithModelBase;
 use bachphuc\PhpLaravelHelpers\WithImage;
 
-use bachphuc\LaravelCustomFields\Trails\WithCustomField;
+use bachphuc\LaravelCustomFields\Traits\WithCustomField;
 
 class ProductBase extends Model
 {

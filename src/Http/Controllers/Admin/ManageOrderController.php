@@ -37,7 +37,12 @@ class ManageOrderController extends ManageBaseController{
     public function createFormElements($isUpdate = false){
         return [
             'amount',
-            'status'
+            'status' => [
+                'type' => 'select',
+                'options' => [
+                    'data' => Order::STATUSES
+                ]
+            ]
         ];
     }
 
@@ -45,22 +50,24 @@ class ManageOrderController extends ManageBaseController{
         return [
             'id' => [
                 'render' => function($item){
-                    return '<a href="'. $item->getAdminHref() .'">#'. $item->id .'</a>';
+                    return '<a class="fast-link" href="'. $item->getAdminHref() .'">#'. $item->id .'</a>';
                 }
             ],
             'user' => [
                 'render' => function($item){
                     if(!$item->user) return;
-                    $html = '<p><a href="' . route('admin.customers.edit', ['user' => $item->user]) . '">' . $item->user->name. '</a></p>';
+                    $html = '<a href="' . route('admin.customers.edit', ['user' => $item->user]) . '">' . $item->user->name. '</a> ';
                     if($item->address){
-                        $html.= '<p><span class="text-primary">' . $item->address->phone . '</span> <br><span class="">' . $item->address->getFullText() . '</span></p>';
+                        $html.= ' <span class="text-info">' . $item->address->phone . '</span> <br><span class="">' . $item->address->getFullText() . '</span>';
                     }
                     
                     return $html;
                 }
             ],
             'created_at',
-            'amount',
+            'amount' => [
+                'type' => 'int'
+            ],
             'payment_method' => [
                 'uppercase' => true
             ],
@@ -87,9 +94,17 @@ class ManageOrderController extends ManageBaseController{
         if($request->query('status') && !empty($request->query('status'))){
             $query->where('status', $request->query('status'));
             $this->addQueryParams('status', $request->query('status'));
+            if($request->query('status') == 'pending'){
+                \View::share([
+                    'subActiveMenu' => 'pending_orders'
+                ]);
+            }
         }
         else{
             $query->where('status', '<>', Order::SHIPPING_CONFIRM);
+            \View::share([
+                'subActiveMenu' => 'all_orders'
+            ]);
         }
     }
 
@@ -140,7 +155,8 @@ class ManageOrderController extends ManageBaseController{
                     'label' => [
                         'pending' => 'danger',
                         'admin_confirmed' => 'info',
-                        'success' => 'success'
+                        'success' => 'success',
+                        'shipping_confirm' => 'danger'
                     ]
                 ],
                 'payment_method' => [
@@ -156,7 +172,9 @@ class ManageOrderController extends ManageBaseController{
             'order' => $order,
             'orderTable' => $orderTable,
             'productTable' => $productTable,
-            'steps' => $steps
+            'steps' => $steps,
+            'menus' => $this->getMenus(),
+            'colorTheme' => $this->getColorTheme(),
         ]);
     }
 
