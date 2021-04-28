@@ -66,6 +66,8 @@ class ProductController extends Controller
 
         $variants = $product->getVariants();
 
+        meta_subject($product);
+
         return Shopy::view('products.show', [
             'product' => $product,
             'customFields' => $customFields,

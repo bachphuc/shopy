@@ -9,6 +9,7 @@ use bachphuc\Shopy\Models\Order;
 use bachphuc\LaravelHTMLElements\Components\Table;
 
 use App\User;
+use LaravelTheme;
 
 class AdminController extends Controller
 {
@@ -50,7 +51,7 @@ class AdminController extends Controller
             'totalProducts' => $totalProducts,
             'newOrdersTable' => $newOrdersTable,
             'totalEarn' => $totalEarn,
-            'menus' => Shopy::getAdminMenus(),
+            'menus' => LaravelTheme::getAdminMenus(),
             'colorTheme' => $this->colorTheme,
         ]);
     }

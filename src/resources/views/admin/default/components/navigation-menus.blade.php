@@ -2,4 +2,4 @@
     $menus = Shopy::getAdminMenus();
 @endphp
 
-@include('bachphuc.elements::admin.components.navigation-menus')
+@include('elements::admin.components.navigation-menus')

@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Route;
 
 use bachphuc\Shopy\Version;
 
+use LaravelTheme;
+
 class ShopyServiceProvider extends ServiceProvider
 {
     /**
@@ -36,6 +38,10 @@ class ShopyServiceProvider extends ServiceProvider
         // boot translator
         $this->loadTranslationsFrom($packagePath . '/resources/lang' , 'shopy');
 
+        $this->publishes([
+            $packagePath .'/config/shopy.php' => config_path('shopy.php'),
+        ], 'shopy-config');
+
         \HtmlElement::mapNamespace('shopy', '\bachphuc\Shopy');
     }
 
@@ -59,6 +65,8 @@ class ShopyServiceProvider extends ServiceProvider
         $this->app->bind('shopy_product', '\bachphuc\Shopy\Models\Product');
         $this->app->bind('shopy_category', '\bachphuc\Shopy\Models\Category');
         $this->app->bind('shopy_product_variant', '\bachphuc\Shopy\Models\ProductVariant');
+
+        LaravelTheme::registerFacade('shopy');
     }
 
     /**

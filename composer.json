@@ -12,7 +12,10 @@
     "autoload": {
         "psr-4": {
             "bachphuc\\Shopy\\": "src/"
-        }
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     },
     "minimum-stability": "stable"
 }

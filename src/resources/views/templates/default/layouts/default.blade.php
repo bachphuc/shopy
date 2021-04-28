@@ -2,29 +2,9 @@
 <html lang="zxx">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="description" content="Ashion Template">
-    <meta name="keywords" content="Ashion, unica, creative, html">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Ashion | Template</title>
+    @include(meta_path())
 
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
-    rel="stylesheet">
-
-    <!-- Css Styles -->
-    <link rel="stylesheet" href="{{Shopy::asset('css/bootstrap.min.css')}}" type="text/css">
-    <link rel="stylesheet" href="{{Shopy::asset('css/font-awesome.min.css')}}" type="text/css">
-    <link rel="stylesheet" href="{{Shopy::asset('css/elegant-icons.css')}}" type="text/css">
-    <link rel="stylesheet" href="{{Shopy::asset('css/jquery-ui.min.css')}}" type="text/css">
-    <link rel="stylesheet" href="{{Shopy::asset('css/magnific-popup.css')}}" type="text/css">
-    <link rel="stylesheet" href="{{Shopy::asset('css/owl.carousel.min.css')}}" type="text/css">
-    <link rel="stylesheet" href="{{Shopy::asset('css/slicknav.min.css')}}" type="text/css">
-    <link rel="stylesheet" href="{{Shopy::asset('css/style.css')}}" type="text/css">
-
-    @include(Shopy::viewPath('styles.style'))
+    @include(shopy_viewpath('components.head-assets'))
     @stack('styles')
 </head>
 
@@ -70,7 +50,7 @@
     <!-- Shop Section End -->
 
     <!-- Instagram Begin -->
-    <div class="instagram">
+    <div class="instagram mt-3">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-2 col-md-4 col-sm-4 p-0">
@@ -141,21 +121,9 @@
     </div>
     <!-- Search End -->
 
-    <!-- Js Plugins -->
-    <script src="{{Shopy::asset('js/jquery-3.3.1.min.js')}}"></script>
-    <script src="{{Shopy::asset('js/bootstrap.min.js')}}"></script>
-    <script src="{{Shopy::asset('js/jquery.magnific-popup.min.js')}}"></script>
-    <script src="{{Shopy::asset('js/jquery-ui.min.js')}}"></script>
-    <script src="{{Shopy::asset('js/mixitup.min.js')}}"></script>
-    <script src="{{Shopy::asset('js/jquery.countdown.min.js')}}"></script>
-    <script src="{{Shopy::asset('js/jquery.slicknav.js')}}"></script>
-    <script src="{{Shopy::asset('js/owl.carousel.min.js')}}"></script>
-    <script src="{{Shopy::asset('js/jquery.nicescroll.min.js')}}"></script>
-    <script src="{{Shopy::asset('js/main.js')}}"></script>
+    @include(shopy_viewpath('components.body-assets'))
 
     @stack('scripts')
-
-    @include(Shopy::viewPath('scripts.script'))
 </body>
 
 </html>

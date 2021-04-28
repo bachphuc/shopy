@@ -6,13 +6,13 @@ use bachphuc\Shopy\Version;
 use bachphuc\Shopy\Models\Cart;
 use bachphuc\Shopy\Models\Address;
 use bachphuc\Shopy\Models\Category;
+use LaravelTheme;
 
 class Shopy
 {
     protected $version = null;
     protected $customLayout = null;
     protected $layout = 'default';
-    protected $theme = 'default';
     protected $adminLayout = 'default';
 
     protected $_cart = null;
@@ -31,7 +31,11 @@ class Shopy
 
     public function viewPath($path)
     {
-        return 'shopy::templates.'. $this->theme . '.' . $path;
+        $viewConfig = config('shopy.views');
+        if(!empty($viewConfig) && isset($viewConfig[$path]) && !empty($viewConfig[$path])){
+            return $viewConfig[$path];
+        }
+        return LaravelTheme::viewPath($path, 'shopy');
     }
 
     public function adminView($path, $data = [])
@@ -39,8 +43,12 @@ class Shopy
         return view($this->adminViewPath($path), $data);        
     }
 
+    public function getTemplate(){
+        return LaravelTheme::getTemplate();
+    }
+
     public function adminViewPath($path){
-        return 'shopy::admin.'. $this->theme . '.' . $path;
+        return LaravelTheme::adminViewPath($path, 'shopy');
     }
 
     public function setLayout($layout)
@@ -50,8 +58,7 @@ class Shopy
 
     public function layout()
     {
-        if(!empty($this->customLayout)) return $this->customLayout;
-        return 'shopy::templates.' . $this->theme . '.layouts.' . $this->layout;
+        return LaravelTheme::layout('shopy');
     }
 
     public function setAdminLayout($layout){
@@ -60,9 +67,9 @@ class Shopy
 
     public function adminLayout(){
         if(is_modal_request()){
-            return 'bachphuc.elements::layouts.blank';
+            return 'elements::layouts.blank';
         }
-        return 'bachphuc.elements::layouts.admin';
+        return 'elements::layouts.admin';
     }
 
     public function cart(){
@@ -148,6 +155,7 @@ class Shopy
                 'icon' => 'dashboard',
                 'url' => url('admin'),
                 'key' => 'dashboard',
+                'position' => 0
             ], [
                 'title' => 'Orders',
                 'icon' => 'list_alt',
@@ -195,7 +203,8 @@ class Shopy
                 'title' => 'Settings',
                 'icon' => 'settings',
                 'url' => url('admin/settings'),
-                'key' => 'settings'
+                'key' => 'settings',
+                'position' => 10
             ]
         ];
     }
