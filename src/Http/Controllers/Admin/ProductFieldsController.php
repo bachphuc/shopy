@@ -12,6 +12,11 @@ use CustomField;
 
 class ProductFieldsController extends FieldsController
 {
-    protected $layout = 'shopy::admin.default.layouts.default';
     protected $objectType = 'shopy_product';
+
+    public function getMenus(){
+        $this->menus = \LaravelTheme::getAdminMenus();
+
+        return $this->menus;
+    }
 }

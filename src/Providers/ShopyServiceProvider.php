@@ -42,6 +42,10 @@ class ShopyServiceProvider extends ServiceProvider
             $packagePath .'/config/shopy.php' => config_path('shopy.php'),
         ], 'shopy-config');
 
+        $this->publishes([
+            $packagePath . '/public/assets' => public_path('vendor/shopy/assets'),
+        ], 'shopy-assets');
+
         \HtmlElement::mapNamespace('shopy', '\bachphuc\Shopy');
     }
 

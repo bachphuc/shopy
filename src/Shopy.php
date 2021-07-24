@@ -6,6 +6,7 @@ use bachphuc\Shopy\Version;
 use bachphuc\Shopy\Models\Cart;
 use bachphuc\Shopy\Models\Address;
 use bachphuc\Shopy\Models\Category;
+use bachphuc\Shopy\Models\Product;
 use LaravelTheme;
 
 class Shopy
@@ -120,7 +121,7 @@ class Shopy
     }
 
     public function asset($path){
-        return asset('assets/templates/default/' . $path);
+        return asset('vendor/shopy/assets/templates/default/' . $path);
     }
 
     public function adminAsset($path){
@@ -146,6 +147,33 @@ class Shopy
 
     public function addressesOf($user = null){
         return Address::getAddressesOf($user);
+    }
+
+    public function config($key, $default = null){
+        $value = config('shopy.' . $key);
+        if(empty($value)) return $default;
+        return $value;
+    }
+
+    public function siteLogo(){
+        $config = $this->config('site_logo');
+        if(!empty($config)) return $config;
+
+        return $this->asset('img/logo.png');
+    }
+
+    public function siteName(){
+        return $this->config('site_name');
+    }
+
+    public function trans($value, $default = ''){
+        $key = strtolower($value);
+        if(\Lang::has($key)) return trans($key);
+        if(\Lang::has('shopy::' . $key)) return trans('shopy::' . $key);
+        if(\Lang::has('shopy::lang.' . $key)) return trans('shopy::lang.' . $key);
+        if(!empty($default)) return $default;
+
+        return $value;
     }
 
     public function getAdminMenus(){
@@ -207,5 +235,13 @@ class Shopy
                 'position' => 10
             ]
         ];
+    }
+
+    public function products($params = []){
+        $length = isset($params['length']) ? (int) $params['length'] : 8;
+        
+        return Product::orderBy('id', 'DESC')
+        ->take($length)
+        ->get();
     }
 }

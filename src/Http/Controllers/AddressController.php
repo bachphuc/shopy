@@ -48,25 +48,32 @@ class AddressController extends ManageBaseController
     public function createFormElements($isUpdate = false){
         $elements = [
             'first_name' => [
-                'title' => trans('shopy::lang.first_name')
+                'title' => trans('shopy::lang.first_name'),
+                'placeholder' => 'Nguyen'
             ],
             'last_name' => [
-                'title' => trans('shopy::lang.last_name')
+                'title' => trans('shopy::lang.last_name'),
+                'placeholder' => 'Van A'
             ],
             'phone' => [
-                'title' => trans('shopy::lang.phone')
+                'title' => trans('shopy::lang.phone'),
+                'placeholder' => shopy_trans('lang.input_phone')
             ],
             'province' => [
-                'title' => trans('shopy::lang.province')
+                'title' => trans('shopy::lang.province'),
+                'placeholder' => shopy_trans('lang.province')
             ], 
             'district' => [
-                'title' => trans('shopy::lang.district')
+                'title' => trans('shopy::lang.district'),
+                'placeholder' => shopy_trans('lang.district')
             ], 
             'ward' => [
-                'title' => trans('shopy::lang.ward')
+                'title' => trans('shopy::lang.ward'),
+                'placeholder' => shopy_trans('lang.ward')
             ],
             'address' => [
-                'title' => trans('shopy::lang.address')
+                'title' => trans('shopy::lang.address'),
+                'placeholder' => shopy_trans('lang.address')
             ],
         ];
 

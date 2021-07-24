@@ -39,7 +39,7 @@ class ManageProductController extends ManageBaseController{
             'title' => [
                 'render' => function($item){
                     $html = '<p>(' . $item->total_variants . ' '. trans('shopy::lang.variants') .') <a target="_blank" href="'. $item->getHref() .'">'. $item->title . '</a></p>';
-                    $html.= '<p>'. str_limit($item->description, 180) . '</p>';
+                    $html.= '<p>'. str_limit(strip_tags($item->description), 180) . '</p>';
     
                     return $html;
                 }
@@ -50,13 +50,17 @@ class ManageProductController extends ManageBaseController{
                     return $item->category->getTitle();
                 }
             ],
-            'price',
+            'price' => [
+                'render' => function($item){
+                    return $item->displayPrice();
+                }
+            ],
             'count',
         ];
     }
 
     public function processTable(&$table){
-
+        $table->setAttribute('disableEditModalMode', true);
     }
 
     public function createFormElements($isUpdate = false){
@@ -67,8 +71,10 @@ class ManageProductController extends ManageBaseController{
                 'type' => 'text',
             ],
             'description' => [
-                'type' => 'text_content',
+                'type' => 'text_editor',
                 'validator' => 'required',
+                'allow_upload_image' => true,
+                'upload_image_url' => route('tinymce.image.upload')
             ],
             'category_id' => [
                 'type' => 'select',

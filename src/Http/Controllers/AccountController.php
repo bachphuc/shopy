@@ -24,4 +24,10 @@ class AccountController extends Controller
             'steps' => $order->getSteps()
         ]); 
     }
+
+    public function logout(Request $request){
+        auth()->logout();
+
+        return redirect()->to('/');
+    }
 }

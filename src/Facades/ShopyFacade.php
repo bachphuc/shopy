@@ -21,11 +21,11 @@ class ShopyFacade extends Facade
      *
      * @return void
      */
-    public static function routes()
+    public static function routes($params = [])
     {
-        self::productRoutes();
-        self::homeRoutes();
-        self::accountRoutes();
+        self::productRoutes($params);
+        self::homeRoutes($params);
+        self::accountRoutes($params);
     }
 
     /**
@@ -66,6 +66,8 @@ class ShopyFacade extends Facade
             $router->get('orders', $namespace. 'AccountController@orders')->name('account.orders');
             $router->get('orders/{order}', $namespace. 'AccountController@orderDetail')->name('orders.show');
             $router->resource('addresses', $namespace. 'AddressController');
+
+            $router->post('/logout', $namespace. 'AccountController@logout')->name('account.logout');
         });
     }
 
@@ -78,7 +80,7 @@ class ShopyFacade extends Facade
     {
         $router = static::$app->make('router');
 
-        $router->group(['prefix' => 'admin', 'as' => 'admin.'], function() use($router) {
+        $router->group(['as' => 'admin.'], function() use($router) {
             $namespace = '\bachphuc\Shopy\Http\Controllers\Admin\\';
             $router->get('/', $namespace. 'AdminController@index')->name('index');
 
@@ -119,5 +121,28 @@ class ShopyFacade extends Facade
         $router = static::$app->make('router');
 
         $router->get('/', '\bachphuc\Shopy\Http\Controllers\IndexController@index')->name('shopy.home');
+    }
+
+    /**
+     * Register the routers for auth
+     */
+    public static function authRoutes(){
+        $router = static::$app->make('router');
+        $namespace = '\bachphuc\Shopy\Http\Controllers\Auth\\';
+
+        // Authentication Routes...
+        $router->get('login', $namespace. 'LoginController@showLoginForm')->name('login');
+        $router->post('login', $namespace. 'LoginController@login');
+        $router->post('logout', $namespace. 'LoginController@logout')->name('logout');
+
+        // Registration Routes...
+        $router->get('register', $namespace. 'RegisterController@showRegistrationForm')->name('register');
+        $router->post('register', $namespace. 'RegisterController@register');
+
+        // Password Reset Routes...
+        $router->get('password/reset', $namespace. 'ForgotPasswordController@showLinkRequestForm')->name('password.request');
+        $router->post('password/email', $namespace. 'ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+        $router->get('password/reset/{token}', $namespace. 'ResetPasswordController@showResetForm')->name('password.reset');
+        $router->post('password/reset', $namespace. 'ResetPasswordController@reset');
     }
 }
