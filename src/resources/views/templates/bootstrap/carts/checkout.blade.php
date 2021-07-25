@@ -61,6 +61,10 @@
     <!-- Checkout Section Begin -->
     <section class="checkout spad">
         <div class="container">
+            @if($errors->any())
+                <div class="alert alert-danger">{{ $errors->first() }}</div>
+            @endif
+
             <div class="row">
                 <div class="col-lg-12">
                     <h6 class="coupon__link">
