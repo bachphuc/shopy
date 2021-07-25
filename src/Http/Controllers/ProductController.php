@@ -32,7 +32,12 @@ class ProductController extends Controller
     {
         $params = $request->all();
 
-        $products = Product::all();
+        $length = $request->query('length') ? (int) $request->query('length') : 12;
+        $query = Product::getAvailableQuery()
+        ->orderBy('id', 'DESC');
+
+        $products = $query->paginate($length);
+
         return Shopy::view('products.index', [
             'products' => $products,
             'breadcrumbs' => $this->breadcrumbs
@@ -49,6 +54,12 @@ class ProductController extends Controller
 
     public function showProduct(Request $request, Product $product)
     {
+        if(!$product->isPublished()){
+            // Product is not published
+            abort(404);
+            return;
+        }
+
         if($product->category){
             $this->breadcrumbs[] = [
                 'title' => $product->category->getTitle(),

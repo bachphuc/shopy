@@ -123,7 +123,7 @@
     </div>
     <div class="row">
       <!-- new orders -->
-      <div class="col-lg-6 col-md-12">
+      <div class="col-lg-12 col-md-12">
         <div class="card">
           <div class="card-header card-header-warning" data-background-color="purple">
             <h4 class="card-title">@lang('shopy::lang.new_orders')</h4>
@@ -136,7 +136,7 @@
       </div>
 
       <!-- other tab content -->
-      <div class="col-lg-6 col-md-12">
+      {{-- <div class="col-lg-6 col-md-12">
         <div class="card card-nav-tabs">
           <div class="card-header card-header-tabs card-header-primary" data-background-color="purple">
             <div class="nav-tabs-navigation">
@@ -381,7 +381,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> --}}
       
     </div>
   </div>

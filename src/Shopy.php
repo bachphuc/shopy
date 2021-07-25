@@ -157,13 +157,15 @@ class Shopy
 
     public function siteLogo(){
         $config = $this->config('site_logo');
-        if(!empty($config)) return $config;
+        if(!empty($config)) return url($config);
 
         return $this->asset('img/logo.png');
     }
 
     public function siteName(){
-        return $this->config('site_name');
+        $siteName = $this->config('site_name');
+        if($siteName === 'Laravel') return 'Shopy';
+        return $siteName;
     }
 
     public function trans($value, $default = ''){
@@ -185,50 +187,50 @@ class Shopy
                 'key' => 'dashboard',
                 'position' => 0
             ], [
-                'title' => 'Orders',
+                'title' => shopy_trans('lang.orders'),
                 'icon' => 'list_alt',
                 'key' => 'orders',
                 'subs' => [
                     [
-                        'title' => trans('shopy::lang.pending_orders'),
+                        'title' => shopy_trans('lang.pending_orders'),
                         'url' => url('admin/orders?status=pending'),
                         'key' => 'pending_orders',
                         'icon' => 'list_alt',
                     ]
                     , [
-                        'title' => trans('shopy::lang.all_orders'),
+                        'title' => shopy_trans('lang.all_orders'),
                         'url' => url('admin/orders'),
                         'key' => 'all_orders',
                         'icon' => 'list_alt',
                     ]
                 ]
             ], [
-                'title' => 'Categories',
+                'title' => shopy_trans('lang.product_categories'),
                 'icon' => 'category',
                 'url' => route('admin.categories.index'),
                 'key' => 'categories',
             ], [
-                'title' => 'Products',
+                'title' => shopy_trans('lang.products'),
                 'icon' => 'dashboard',
                 'url' => route('admin.products.index'),
                 'key' => 'products',
             ], [
-                'title' => 'Customers',
+                'title' => shopy_trans('lang.customers'),
                 'icon' => 'supervised_user_circle',
                 'url' => route('admin.customers.index'),
                 'key' => 'customers',
             ], [
-                'title' => 'Reports',
+                'title' => shopy_trans('lang.report'),
                 'icon' => 'bar_chart',
                 'url' => url('admin/reports'),
                 'key' => 'reports',
-            ],[
+            ],/*[
                 'title' => 'Fields',
                 'icon' => 'dashboard',
                 'url' => route('admin.fields.index'),
                 'key' => 'fields'
-            ], [
-                'title' => 'Settings',
+            ],*/ [
+                'title' => shopy_trans('lang.settings'),
                 'icon' => 'settings',
                 'url' => url('admin/settings'),
                 'key' => 'settings',
@@ -243,5 +245,25 @@ class Shopy
         return Product::orderBy('id', 'DESC')
         ->take($length)
         ->get();
+    }
+
+    public function getHeaderMenus()
+    {
+        $menus = config('shopy.header_menus', []);
+
+        if(!empty($menus)){
+            $bHasActive = false;
+            foreach($menus as $key => $menu){
+                if(isset($menu['active']) && $menu['active']){
+                    $bHasActive = true;
+                }
+            }
+
+            if(!$bHasActive){
+                $menus[0]['active'] = true;
+            }
+        }
+   
+        return $menus;
     }
 }

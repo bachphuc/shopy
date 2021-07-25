@@ -6,6 +6,8 @@
 @element('shopy::new-product-block')
 <!-- Product Section End -->
 
+@element('articles::article-columns-block')
+
 @element('articles::new-articles-block')
 
 <!-- Banner Section Begin -->

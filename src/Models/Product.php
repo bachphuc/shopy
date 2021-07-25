@@ -15,13 +15,21 @@ class Product extends ProductBase
 
     protected $_images = null;
 
+    const STATUS_DRAFF = 'draft';
+    const STATUS_PUBLISHED = 'published';
+    const STATUS_REMOVED = 'removed';
+
+    const STATUSES = [
+        Product::STATUS_DRAFF, Product::STATUS_PUBLISHED, Product::STATUS_REMOVED
+    ];
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'title', 'image', 'description', 'user_id', 'price', 'count', 'alias', 'category_id', 'currency', 'alias', 'is_hot', 'is_new', 'is_featured', 'total_variants', 'total_sold', 'total_view', 'total_click'
+        'title', 'image', 'description', 'user_id', 'price', 'count', 'alias', 'category_id', 'currency', 'alias', 'is_hot', 'is_new', 'is_featured', 'total_variants', 'total_sold', 'total_view', 'total_click', 'status', 'is_remove_from_sale',
     ];
 
     public function user(){
@@ -99,5 +107,19 @@ class Product extends ProductBase
 
     public function getAdminHref(){
         return Shopy::adminRoute('products.show', ['product' => $this]);
+    }
+
+    public function isRemoveFromSale(){
+        return (int) $this->is_remove_from_sale ? true : false;
+    }
+
+    public function isPublished(){
+        return $this->status === Product::STATUS_PUBLISHED;
+    }
+
+    public static function getAvailableQuery(){
+        $query = Product::where('status', Product::STATUS_PUBLISHED);
+
+        return $query;
     }
 }

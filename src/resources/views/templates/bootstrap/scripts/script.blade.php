@@ -21,11 +21,19 @@
             r.onload = () => {
                 if(r.readyState === 4){
                     if(r.status === 200){
-                        miniCart.innerHTML = r.responseText;
-                        this.showMiniCart();
-                        setTimeout(() => {
-                            this.hideMiniCart();
-                        }, 3000);
+                        const res = JSON.parse(r.responseText);
+                        if(res.status){
+                            miniCart.innerHTML = res.content;
+                            const b = document.querySelector('.cart_badge div.tip');
+                            b && (b.innerHTML = res.cart.total);
+                            this.showMiniCart();
+                            setTimeout(() => {
+                                this.hideMiniCart();
+                            }, 3000);
+                        }
+                        else{
+                            alert(res.message);
+                        }
                     }
                 }
             }

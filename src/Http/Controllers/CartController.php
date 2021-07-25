@@ -32,10 +32,18 @@ class CartController extends Controller
         Shopy::cart()->addProduct($product, $data);
 
         if($request->ajax()){
-            return Shopy::view('components.mini-cart', [
+            $content = Shopy::view('components.mini-cart', [
                 'full' => false,
                 'newProductId' => $product->id
-            ]);
+            ])->render();
+
+            return [
+                'status' => true,
+                'content' => $content,
+                'cart' => [
+                    'total' => Shopy::cartTotal()
+                ]
+            ];
         }
 
         return redirect()->to($product->getHref() . '?show_cart=1');

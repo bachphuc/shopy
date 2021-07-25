@@ -36,7 +36,8 @@ class AdminController extends Controller
                         'pending' => 'warning',
                         'success' => 'success',
                         'shipping_confirm' => 'danger',
-                        'admin_confirmed' => 'info'
+                        'admin_confirmed' => 'info',
+                        'cancelled' => 'danger',
                     ]
                 ]
             ]

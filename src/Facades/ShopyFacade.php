@@ -33,14 +33,19 @@ class ShopyFacade extends Facade
      *
      * @return void
      */
-    public static function productRoutes()
+    public static function productRoutes($params = [])
     {
         $router = static::$app->make('router');
 
         $namespace = '\bachphuc\Shopy\Http\Controllers\\';
 
-        $router->resource('products', $namespace . 'ProductController');
-        $router->get('product/{alias}', $namespace. 'ProductController@detail')->name('products.detail');
+
+        $alias = isset($params['alias']) ? $params['alias'] : 'products';
+
+        $router->get('/' .      $alias,                             $namespace . 'ProductController@index')->name('products.index');
+        $router->get('/' .      $alias . '/{product}',              $namespace . 'ProductController@show')->where('product', '[0-9]+')->name('products.show');
+
+        $router->get('/' .      $alias . '/{alias}', $namespace. 'ProductController@detail')->name('products.detail');
 
         $router->resource('carts', $namespace. 'CartController');
         $router->get('cart/checkout', $namespace. 'CartController@checkout')->name('carts.checkout');

@@ -104,4 +104,9 @@ return [
     'categories' => 'Categories',
     'sort_by_price' => 'Sort by Price',
     'filter_product' => 'Filter product',
+    'contact' => 'Contact',
+    'customers' => 'Khách hàng',
+    'report' => 'Báo cáo',
+    'settings' => 'Cài đặt',
+    'product_categories' => 'Danh mục sản phẩm',
 ];

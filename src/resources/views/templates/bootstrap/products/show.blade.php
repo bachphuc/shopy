@@ -85,18 +85,25 @@
                             <div class="product__details__price">$ <span id="product__details__price_amount">{{$product->getPriceOf($selectedVariant)}}</span> <span class="product__details__price__discount">$ 83.0</span></div>
                             
                             <div class="product__details__button">
+                                @if(!$product->isRemoveFromSale())
+                                @if(setting('shopy_general.allow_select_quantity'))
                                 <div class="quantity">
                                     <span>{{shopy_trans('lang.quantity')}}:</span>
                                     <div class="pro-qty">
                                         <input name="count" type="text" value="1" />
                                     </div>
                                 </div>
+                                @endif
                                 <button class="cart-btn" type="submit"><span class="icon_bag_alt"></span> @lang('shopy::lang.add_to_cart')</button>
+                                @endif
                                 <ul>
                                     <li><a href="#"><span class="icon_heart_alt"></span></a></li>
                                     {{-- <li><a href="#"><span class="icon_adjust-horiz"></span></a></li> --}}
                                 </ul>
                             </div>
+                            @if($product->isRemoveFromSale())
+                            <p>{{shopy_trans('lang.remove_from_sale')}}</p>
+                            @endif
                             <div class="product__details__widget">
                                 <ul>
                                     {{-- <li>
@@ -212,7 +219,6 @@
 
         function fieldChanged(e){
             if(!variants.length){
-                console.log(`there is no variants found`);
                 document.querySelectorAll('.field-checkbox-radio').forEach(e => {
                     e.disabled = true;
                 })

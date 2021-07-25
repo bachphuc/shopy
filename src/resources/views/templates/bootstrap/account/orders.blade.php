@@ -12,6 +12,7 @@
                             'success' => 'badge-success',
                             'admin_confirmed' => 'badge-primary',
                             'shipping_confirm' => 'badge-secondary',
+                            'cancelled' => 'badge-danger'
                         ];
                     @endphp
                     <div class="shop__cart__table">

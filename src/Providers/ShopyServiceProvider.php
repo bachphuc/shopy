@@ -38,6 +38,10 @@ class ShopyServiceProvider extends ServiceProvider
         // boot translator
         $this->loadTranslationsFrom($packagePath . '/resources/lang' , 'shopy');
 
+        $this->mergeConfigFrom(
+            $packagePath . '/config/shopy.php', 'shopy'
+        );
+
         $this->publishes([
             $packagePath .'/config/shopy.php' => config_path('shopy.php'),
         ], 'shopy-config');

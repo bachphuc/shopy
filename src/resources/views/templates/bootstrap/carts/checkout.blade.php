@@ -63,7 +63,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <h6 class="coupon__link"><span class="icon_tag_alt"></span> <a href="#">@lang('shopy::lang.have_a_coupon')</a> @lang('shopy::lang.click_here_to_enter_your_coupon').</h6>
+                    <h6 class="coupon__link">
+                        {{-- <span class="icon_tag_alt"></span> <a href="#">@lang('shopy::lang.have_a_coupon')</a> @lang('shopy::lang.click_here_to_enter_your_coupon'). --}}
+                    </h6>
                 </div>
             </div>
             <form action="{{route('carts.payment-method')}}" class="checkout__form" method="POST">

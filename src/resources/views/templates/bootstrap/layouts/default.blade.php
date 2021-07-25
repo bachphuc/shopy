@@ -31,7 +31,7 @@
             </a></li>
         </ul>
         <div class="offcanvas__logo">
-            <a href="/"><img src="{{Shopy::siteLogo()}}" alt=""></a>
+            <a href="/"><img height="32" src="{{Shopy::siteLogo()}}" alt=""></a>
         </div>
         <div id="mobile-menu-wrap"></div>
         <div class="offcanvas__auth">
@@ -48,6 +48,8 @@
     <!-- Breadcrumb Begin -->
     @include(Shopy::viewPath('components.breadcrumbs'))
     <!-- Breadcrumb End -->
+
+    @include(Shopy::viewPath('components.alert'))
 
     @yield('content')
     <!-- Shop Section End -->

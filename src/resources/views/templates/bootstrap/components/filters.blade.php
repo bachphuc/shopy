@@ -59,7 +59,7 @@
         </div>
         @endforeach
     </div>
-    <div>
+    <div class="mt-4 mb-4">
         <button type="submit" class="btn btn-primary">@lang('shopy::lang.filter_product')</button>
     </div>
 </form>

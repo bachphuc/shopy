@@ -85,6 +85,7 @@ class ManageOrderController extends ManageBaseController{
                     'shipping_confirm' => 'danger',
                     'success' => 'success',
                     'admin_confirmed' => 'info',
+                    'cancelled' => 'danger'
                 ]
             ],
         ];
