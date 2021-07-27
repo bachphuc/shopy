@@ -4,7 +4,7 @@
     @endphp
     <ul>
         @foreach($menus as $key => $menu)
-        <li class="{{isset($menu['active']) && $menu['active'] ? 'active' : ''}}">
+        <li class="{{theme_is_active_menu($menu['key']) ? 'active' : ''}}">
             @if(isset($menu['url']))
             <a href="{{$menu['url']}}">{{shopy_trans($menu['title'])}}</a>
             @elseif(isset($menu['route']))

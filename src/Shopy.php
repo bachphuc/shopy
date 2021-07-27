@@ -250,19 +250,6 @@ class Shopy
     public function getHeaderMenus()
     {
         $menus = config('shopy.header_menus', []);
-
-        if(!empty($menus)){
-            $bHasActive = false;
-            foreach($menus as $key => $menu){
-                if(isset($menu['active']) && $menu['active']){
-                    $bHasActive = true;
-                }
-            }
-
-            if(!$bHasActive){
-                $menus[0]['active'] = true;
-            }
-        }
    
         return $menus;
     }

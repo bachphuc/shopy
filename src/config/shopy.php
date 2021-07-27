@@ -9,12 +9,15 @@ return [
     ],
     'header_menus' => [[
         'title' => 'lang.home',
-        'url' => '/'
+        'url' => '/',
+        'key' => 'home'
     ], [
         'title' => 'lang.products',
         'route' => 'products.index',
+        'key' => 'product_index',
     ], [
         'title' => 'lang.contact',
-        'url' => '/'
+        'url' => '/',
+        'key' => 'contact'
     ]]
 ];

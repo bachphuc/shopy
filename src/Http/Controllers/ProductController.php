@@ -26,6 +26,8 @@ class ProductController extends Controller
                 'url' => Shopy::route('products.index')
             ]
         ];
+
+        theme_active_menu('products.index');
     }
 
     public function index(Request $request)
